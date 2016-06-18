@@ -1,0 +1,19 @@
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:cassandra="http://www.springframework.org/schema/data/cassandra"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/data/cassandra http://www.springframework.org/schema/data/cassandra/spring-cassandra.xsd">
+
+    <cassandra:cluster id="cassandraCluster" contact-points="localhost" port="9042"/>
+
+    <cassandra:converter/>
+
+    <cassandra:session id="cassandraSession" cluster-ref="cassandraCluster" keyspace-name="spoon"/>
+
+    <cassandra:template id="cassandraTemplate"/>
+
+    <cassandra:repositories base-package="ru.mipt.restaurant.server.dao"/>
+
+    <cassandra:mapping entity-base-packages="ru.mipt.restaurant.server.domain"/>
+
+</beans:beans>
