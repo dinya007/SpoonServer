@@ -24,7 +24,7 @@ public class AuthController {
         this.ownerService = ownerService;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.PUT)
     public ResponseEntity<String> register(RegisterDto registerDto) {
         if (!isValidParams(registerDto))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
