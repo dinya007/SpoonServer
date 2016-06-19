@@ -10,7 +10,7 @@ public class CoordinateHelper {
         throw new AssertionError("This constructor hasn't to be called.");
     }
 
-    public static Rectangle2D mapToRectangle(Coordinate topLeft, Coordinate bottomRight) {
+    public static Rectangle2D toRectangle(Coordinate topLeft, Coordinate bottomRight) {
         return new Rectangle2D.Double(topLeft.getLongitude(),
                 topLeft.getLatitude(),
                 bottomRight.getLongitude() - topLeft.getLongitude(),

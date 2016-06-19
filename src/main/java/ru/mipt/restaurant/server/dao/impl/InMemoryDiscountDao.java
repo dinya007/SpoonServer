@@ -35,6 +35,16 @@ public class InMemoryDiscountDao implements DiscountDao{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Discount save(Discount discount) {
+        return discounts.put(discount.getCoordinate(), discount);
+    }
+
+    @Override
+    public Discount delete(Discount discount) {
+        return discounts.remove(discount.getCoordinate());
+    }
+
     private void initMap() {
         Coordinate coordinate1 = new Coordinate(55.754695, 37.621527);
         Discount discount1 = new Discount(coordinate1, "ReStore", 10, "Скидки на планшеты и ноутбуки");

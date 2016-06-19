@@ -18,7 +18,7 @@ public class CoordinateHelperTest {
         Coordinate topLeft = new Coordinate(topLeftLatitude, topLeftLongitude);
         Coordinate bottomRight = new Coordinate(bottomRightLatitude, bottomRightLongitude);
 
-        Rectangle2D rectangle = CoordinateHelper.mapToRectangle(topLeft, bottomRight);
+        Rectangle2D rectangle = CoordinateHelper.toRectangle(topLeft, bottomRight);
 
         Assert.assertTrue(Double.compare(topLeftLongitude, rectangle.getX()) == 0);
         Assert.assertTrue(Double.compare(topLeftLatitude, rectangle.getY()) == 0);

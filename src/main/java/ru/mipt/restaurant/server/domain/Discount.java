@@ -15,6 +15,9 @@ public class Discount {
     private String description;
     @Column("sale")
     private int sale;
+    @Column("owner_login")
+    private String ownerLogin;
+
 
     public Discount() {
     }
@@ -56,5 +59,13 @@ public class Discount {
 
     public void setSale(int sale) {
         this.sale = sale;
+    }
+
+    public String getOwnerLogin() {
+        return ownerLogin;
+    }
+
+    public void setOwnerLogin(String ownerLogin) {
+        this.ownerLogin = ownerLogin;
     }
 }

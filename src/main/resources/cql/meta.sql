@@ -7,5 +7,14 @@ CREATE TABLE discounts (
   location_name text,
   description text,
   sale int,
+  owner_login text,
   PRIMARY KEY (longitude, latitude)
+);
+
+CREATE TABLE owners (
+  login text,
+  password text,
+  email text,
+  is_confirmed boolean,
+  PRIMARY KEY (login)
 );

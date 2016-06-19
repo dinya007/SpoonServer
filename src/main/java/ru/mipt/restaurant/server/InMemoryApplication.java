@@ -7,11 +7,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import ru.mipt.restaurant.server.dao.impl.CassandraDiscountDao;
+import ru.mipt.restaurant.server.dao.impl.CassandraOwnerDao;
 
 @Configuration
 @EnableAutoConfiguration(exclude = {CassandraDataAutoConfiguration.class})
 @ComponentScan(basePackages = {"ru.mipt.restaurant.server"}, excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {CassandraDiscountDao.class, Application.class})})
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {Application.class, CassandraDiscountDao.class, CassandraOwnerDao.class})})
 public class InMemoryApplication {
 
     public static void main(String[] args) {

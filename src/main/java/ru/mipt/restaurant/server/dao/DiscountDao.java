@@ -10,4 +10,8 @@ public interface DiscountDao {
     List<Discount> getAll();
 
     List<Discount> getAllInsideRectangle(Rectangle2D rectangle);
+
+    Discount save(Discount discount);
+
+    Discount delete(Discount discount);
 }

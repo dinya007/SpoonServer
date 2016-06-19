@@ -34,5 +34,16 @@ public class CassandraDiscountDao implements DiscountDao {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Discount save(Discount discount) {
+        return cassandraOperations.insert(discount);
+    }
+
+    @Override
+    public Discount delete(Discount discount) {
+        cassandraOperations.delete(discount);
+        return discount;
+    }
+
 
 }

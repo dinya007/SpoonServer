@@ -11,4 +11,8 @@ public interface DiscountService {
 
     List<Discount> getAll();
 
+    Discount add(Discount discount);
+
+    Discount delete(Discount discount);
+
 }

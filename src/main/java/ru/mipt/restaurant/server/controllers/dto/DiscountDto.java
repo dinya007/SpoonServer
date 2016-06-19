@@ -8,6 +8,7 @@ public class DiscountDto {
     private String locationName;
     private String description;
     private int sale;
+    private String ownerLogin;
 
     public DiscountDto() {
     }
@@ -51,4 +52,11 @@ public class DiscountDto {
         this.sale = sale;
     }
 
+    public String getOwnerLogin() {
+        return ownerLogin;
+    }
+
+    public void setOwnerLogin(String ownerLogin) {
+        this.ownerLogin = ownerLogin;
+    }
 }

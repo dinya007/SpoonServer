@@ -22,12 +22,22 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public List<Discount> getInsideRectangle(Coordinate topLeft, Coordinate bottomRight) {
-        return discountDao.getAllInsideRectangle(CoordinateHelper.mapToRectangle(topLeft, bottomRight));
+        return discountDao.getAllInsideRectangle(CoordinateHelper.toRectangle(topLeft, bottomRight));
     }
 
     @Override
     public List<Discount> getAll() {
         return discountDao.getAll();
+    }
+
+    @Override
+    public Discount add(Discount discount) {
+        return discountDao.save(discount);
+    }
+
+    @Override
+    public Discount delete(Discount discount) {
+        return discountDao.delete(discount);
     }
 
 }
