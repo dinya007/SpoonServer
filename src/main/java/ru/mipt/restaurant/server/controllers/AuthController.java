@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mipt.restaurant.server.controllers.dto.LoginDto;
 import ru.mipt.restaurant.server.controllers.dto.RegisterDto;
-import ru.mipt.restaurant.server.domain.Owner;
 import ru.mipt.restaurant.server.service.OwnerService;
 import ru.mipt.restaurant.server.utils.OwnerHelper;
 

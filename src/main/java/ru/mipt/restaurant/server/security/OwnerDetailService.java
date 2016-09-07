@@ -22,7 +22,7 @@ public class OwnerDetailService implements UserDetailsService {
 
         if (owner != null) {
             return new User(owner.getLogin(), owner.getPassword(), true, true, true, true,
-                    AuthorityUtils.createAuthorityList("OWNER"));
+                    AuthorityUtils.createAuthorityList(Roles.OWNER.name()));
         } else {
             throw new UsernameNotFoundException("could not find the user '"
                     + username + "'");
