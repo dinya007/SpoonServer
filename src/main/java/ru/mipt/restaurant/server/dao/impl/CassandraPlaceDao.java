@@ -3,8 +3,8 @@ package ru.mipt.restaurant.server.dao.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.stereotype.Component;
-import ru.mipt.restaurant.server.dao.DiscountDao;
-import ru.mipt.restaurant.server.domain.Discount;
+import ru.mipt.restaurant.server.dao.PlaceDao;
+import ru.mipt.restaurant.server.domain.Place;
 import ru.mipt.restaurant.server.utils.CoordinateHelper;
 
 import java.awt.geom.Rectangle2D;
@@ -12,22 +12,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CassandraDiscountDao implements DiscountDao {
+public class CassandraPlaceDao implements PlaceDao {
 
     private final CassandraOperations cassandraOperations;
 
     @Autowired
-    public CassandraDiscountDao(CassandraOperations cassandraOperations) {
+    public CassandraPlaceDao(CassandraOperations cassandraOperations) {
         this.cassandraOperations = cassandraOperations;
     }
 
     @Override
-    public List<Discount> getAll() {
-        return cassandraOperations.select("select * from discounts", Discount.class);
+    public List<Place> getAll() {
+        return cassandraOperations.select("select * from discounts", Place.class);
     }
 
     @Override
-    public List<Discount> getAllInsideRectangle(Rectangle2D rectangle) {
+    public List<Place> getAllInsideRectangle(Rectangle2D rectangle) {
         return getAll()
                 .parallelStream()
                 .filter(discount -> CoordinateHelper.isInside(rectangle, discount.getCoordinate()))
@@ -35,14 +35,14 @@ public class CassandraDiscountDao implements DiscountDao {
     }
 
     @Override
-    public Discount save(Discount discount) {
-        return cassandraOperations.insert(discount);
+    public Place save(Place place) {
+        return cassandraOperations.insert(place);
     }
 
     @Override
-    public Discount delete(Discount discount) {
-        cassandraOperations.delete(discount);
-        return discount;
+    public Place delete(Place place) {
+        cassandraOperations.delete(place);
+        return place;
     }
 
 

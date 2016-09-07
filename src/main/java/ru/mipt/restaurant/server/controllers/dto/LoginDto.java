@@ -3,9 +3,14 @@ package ru.mipt.restaurant.server.controllers.dto;
 public class LoginDto {
 
     private String login;
-    private String email;
+    private String password;
 
     public LoginDto() {
+    }
+
+    public LoginDto(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
 
     public String getLogin() {
@@ -16,11 +21,11 @@ public class LoginDto {
         this.login = login;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

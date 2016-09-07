@@ -49,6 +49,7 @@ public class InMemoryOwnerDao implements OwnerDao {
         owner3.setPassword("password3");
         owner3.setEmail("e3@mail.com");
         owner3.setConfirmed(true);
+        owner3.setConfirmed(true);
 
         owners.put(owner1.getLogin(), owner1);
         owners.put(owner2.getLogin(), owner2);

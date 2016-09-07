@@ -1,23 +1,33 @@
-package ru.mipt.restaurant.server.controllers.dto;
+package ru.mipt.restaurant.server.domain;
 
-import ru.mipt.restaurant.server.domain.Coordinate;
+import org.springframework.data.cassandra.mapping.Column;
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
 
-public class DiscountDto {
+@Table("discounts")
+public class Place {
 
+    @PrimaryKey
     private Coordinate coordinate;
+    @Column("location_name")
     private String locationName;
+    @Column("description")
     private String description;
+    @Column("sale")
     private int sale;
+    @Column("owner_login")
     private String ownerLogin;
 
-    public DiscountDto() {
+
+    public Place() {
     }
 
-    public DiscountDto(Coordinate coordinate, String locationName, int sale, String description) {
+    public Place(Coordinate coordinate, String locationName, int sale, String description, String ownerLogin) {
         this.coordinate = coordinate;
         this.locationName = locationName;
         this.sale = sale;
         this.description = description;
+        this.ownerLogin = ownerLogin;
     }
 
     public Coordinate getCoordinate() {

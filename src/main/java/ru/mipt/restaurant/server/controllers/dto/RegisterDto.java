@@ -9,6 +9,12 @@ public class RegisterDto {
     public RegisterDto() {
     }
 
+    public RegisterDto(String login, String email, String password) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+    }
+
     public String getLogin() {
         return login;
     }

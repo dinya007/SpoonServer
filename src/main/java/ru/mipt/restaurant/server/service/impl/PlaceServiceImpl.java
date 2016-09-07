@@ -1,0 +1,43 @@
+package ru.mipt.restaurant.server.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.mipt.restaurant.server.dao.PlaceDao;
+import ru.mipt.restaurant.server.domain.Coordinate;
+import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.service.PlaceService;
+import ru.mipt.restaurant.server.utils.CoordinateHelper;
+
+import java.util.List;
+
+@Service
+public class PlaceServiceImpl implements PlaceService {
+
+    private final PlaceDao placeDao;
+
+    @Autowired
+    public PlaceServiceImpl(PlaceDao placeDao) {
+        this.placeDao = placeDao;
+    }
+
+    @Override
+    public List<Place> getInsideRectangle(Coordinate topLeft, Coordinate bottomRight) {
+        return placeDao.getAllInsideRectangle(CoordinateHelper.toRectangle(topLeft, bottomRight));
+    }
+
+    @Override
+    public List<Place> getAll() {
+        return placeDao.getAll();
+    }
+
+    @Override
+    public Place add(Place place) {
+        return placeDao.save(place);
+    }
+
+    @Override
+    public Place delete(Place place) {
+        return placeDao.delete(place);
+    }
+
+}
