@@ -1,4 +1,3 @@
-
 package ru.mipt.restaurant.server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;

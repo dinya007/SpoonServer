@@ -2,7 +2,6 @@ group 'restaurnt'
 version '1.0-SNAPSHOT'
 
 
-
 buildscript {
     repositories {
         mavenCentral()
@@ -16,15 +15,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 
-jar {
-    manifest {
-        attributes(
-                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-                'Main-Class': 'ru.mipt.restaurant.server.Application'
-        )
-    }
-}
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -34,9 +24,15 @@ repositories {
     jcenter()
 }
 
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'SpoonServer',
+                'Implementation-Version': version,
+                'Main-Class': 'ru.mipt.restaurant.server.InMamoryApplication'
+    }
+}
 
 dependencies {
-    compile ' org.springframework.boot:spring-boot-starter-parent:1.3.5.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'io.netty:netty-all:4.0.9.Final'
@@ -46,24 +42,6 @@ dependencies {
 
 }
 
-sourceSets {
-    test {
-        java.srcDir 'src/test/java'
-    }
-    integration {
-        java.srcDir 'src/integTest/java'
-        resources.srcDir 'src/integTest/resources'
-        compileClasspath += main.output + test.output
-        runtimeClasspath += main.output + test.output
-    }
-}
-
-configurations {
-    integrationCompile.extendsFrom testCompile
-    integrationRuntime.extendsFrom testRuntime
-}
-
-task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
-    testClassesDir = sourceSets.integration.output.classesDir
-    classpath = sourceSets.integration.runtimeClasspath
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.8'
 }

@@ -18,7 +18,7 @@ public class CassandraOwnerDao implements OwnerDao {
 
     @Override
     public Owner save(Owner owner) {
-        if(get(owner.getLogin()) == null) return cassandraOperations.insert(owner);
+        if (get(owner.getLogin()) == null) return cassandraOperations.insert(owner);
         return cassandraOperations.update(owner);
     }
 

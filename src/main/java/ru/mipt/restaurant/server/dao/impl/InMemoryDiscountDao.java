@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Component
-public class InMemoryDiscountDao implements DiscountDao{
+public class InMemoryDiscountDao implements DiscountDao {
 
     private final ConcurrentHashMap<Coordinate, Discount> discounts;
 

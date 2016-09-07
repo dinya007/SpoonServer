@@ -1,6 +1,5 @@
 package ru.mipt.restaurant.server;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +15,8 @@ import ru.mipt.restaurant.server.dao.impl.InMemoryOwnerDao;
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {InMemoryApplication.class, InMemoryDiscountDao.class, InMemoryOwnerDao.class})})
 public class Application {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+//    public static void main(String[] args) {
+//        SpringApplication.run(Application.class, args);
+//    }
 
 }
