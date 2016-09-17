@@ -2,25 +2,25 @@ package ru.mipt.restaurant.server.controllers.dto;
 
 public class RegisterDto {
 
-    private String login;
+    private String name;
     private String email;
     private String password;
 
     public RegisterDto() {
     }
 
-    public RegisterDto(String login, String email, String password) {
-        this.login = login;
+    public RegisterDto(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

@@ -35,7 +35,7 @@ public class AuthController {
 
 
     private boolean isValidParams(RegisterDto registerDto) {
-        return !(StringUtils.isEmpty(registerDto.getLogin())
+        return !(StringUtils.isEmpty(registerDto.getName())
                 || StringUtils.isEmpty(registerDto.getEmail())
                 || StringUtils.isEmpty(registerDto.getPassword()));
     }

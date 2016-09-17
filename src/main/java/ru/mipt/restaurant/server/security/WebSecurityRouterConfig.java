@@ -39,12 +39,13 @@ public class WebSecurityRouterConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().permitAll()
 //                .and()
 //                .formLogin()
-//                .loginPage("/login").permitAll();
+//                .loginPage("/name").permitAll();
 //                .and().csrf();
 
         http.authorizeRequests().antMatchers("/secure/**").authenticated();
         http.csrf().disable();
         http.formLogin().loginProcessingUrl("/authentication/login");
+        http.logout().logoutUrl("/authentication/logout");
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.formLogin().successHandler(authenticationSuccessHandler);
         http.formLogin().failureHandler(authenticationFailureHandler);

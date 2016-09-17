@@ -5,9 +5,9 @@ INSERT INTO discounts (latitude,  longitude, location_name, description, sale, o
 INSERT INTO discounts (latitude,  longitude, location_name, description, sale, owner_login)
   VALUES (55.756852, 37.614048, 'Vertu', 'Шиш вам, а не скидки', 0, 'login3');
 
-INSERT INTO owners (login,  password, email, is_confirmed)
+INSERT INTO owners (name,  password, email, is_confirmed)
   VALUES ('login1', 'password1','e1@mail.com', false);
-INSERT INTO owners (login,  password, email, is_confirmed)
+INSERT INTO owners (name,  password, email, is_confirmed)
   VALUES ('login2', 'password2','e2@mail.com', false);
-INSERT INTO owners (login,  password, email, is_confirmed)
+INSERT INTO owners (name,  password, email, is_confirmed)
   VALUES ('login3', 'password3','e3@mail.com', true);

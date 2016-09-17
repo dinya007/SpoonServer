@@ -12,9 +12,9 @@ CREATE TABLE discounts (
 );
 
 CREATE TABLE owners (
-  login text,
+  name text,
   password text,
   email text,
   is_confirmed boolean,
-  PRIMARY KEY (login)
+  PRIMARY KEY (name)
 );

@@ -21,7 +21,7 @@ public class PlaceMapper {
         return placeDto;
     }
 
-    public static Place toDiscount(PlaceDto placeDto) {
+    public static Place toPlace(PlaceDto placeDto) {
         Place place = new Place();
 
         place.setCoordinate(placeDto.getCoordinate());

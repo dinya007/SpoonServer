@@ -7,8 +7,8 @@ import org.springframework.data.cassandra.mapping.Table;
 @Table("owners")
 public class Owner {
 
-    @PrimaryKey("login")
-    private String login;
+    @PrimaryKey("name")
+    private String name;
     @Column("email")
     private String email;
     @Column("password")
@@ -19,12 +19,12 @@ public class Owner {
     public Owner() {
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
