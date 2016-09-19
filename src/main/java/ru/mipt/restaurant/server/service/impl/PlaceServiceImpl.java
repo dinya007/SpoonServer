@@ -1,6 +1,7 @@
 package ru.mipt.restaurant.server.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Coordinate;
@@ -38,6 +39,12 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public Place delete(Place place) {
         return placeDao.delete(place);
+    }
+
+    @Override
+    public List<Place> getAllForSession() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return placeDao.getAllByOwner(email);
     }
 
 }

@@ -16,18 +16,18 @@ public class Place {
     @Column("sale")
     private int sale;
     @Column("owner_login")
-    private String ownerLogin;
+    private String ownerEmail;
 
 
     public Place() {
     }
 
-    public Place(Coordinate coordinate, String locationName, int sale, String description, String ownerLogin) {
+    public Place(Coordinate coordinate, String locationName, int sale, String description, String ownerEmail) {
         this.coordinate = coordinate;
         this.locationName = locationName;
         this.sale = sale;
         this.description = description;
-        this.ownerLogin = ownerLogin;
+        this.ownerEmail = ownerEmail;
     }
 
     public Coordinate getCoordinate() {
@@ -62,11 +62,11 @@ public class Place {
         this.sale = sale;
     }
 
-    public String getOwnerLogin() {
-        return ownerLogin;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public void setOwnerLogin(String ownerLogin) {
-        this.ownerLogin = ownerLogin;
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 }

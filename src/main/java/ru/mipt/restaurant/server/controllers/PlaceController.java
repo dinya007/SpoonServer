@@ -22,8 +22,8 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @Autowired
-    public PlaceController(PlaceService userDao) {
-        this.placeService = userDao;
+    public PlaceController(PlaceService placeService) {
+        this.placeService = placeService;
     }
 
     @RequestMapping("/{northLatitude}/{northLongitude}/{southLatitude}/{southLongitude}")

@@ -45,5 +45,10 @@ public class CassandraPlaceDao implements PlaceDao {
         return place;
     }
 
+    @Override
+    public List<Place> getAllByOwner(String email) {
+        return null;
+    }
+
 
 }

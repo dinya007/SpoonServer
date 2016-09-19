@@ -20,9 +20,4 @@ public class InMemoryApplication {
         SpringApplication.run(InMemoryApplication.class, args);
     }
 
-//    @Bean
-//    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter() {
-//        return new WebSecurityRouterConfig();
-//    }
-
 }

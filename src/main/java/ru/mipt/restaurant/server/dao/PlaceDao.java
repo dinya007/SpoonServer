@@ -14,4 +14,6 @@ public interface PlaceDao {
     Place save(Place place);
 
     Place delete(Place place);
+
+    List<Place> getAllByOwner(String email);
 }

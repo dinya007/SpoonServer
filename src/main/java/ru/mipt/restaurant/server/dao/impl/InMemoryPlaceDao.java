@@ -19,7 +19,7 @@ public class InMemoryPlaceDao implements PlaceDao {
 
     public InMemoryPlaceDao() {
         places = new ConcurrentHashMap<>();
-        initMap();
+        initMaps();
     }
 
     @Override
@@ -45,15 +45,23 @@ public class InMemoryPlaceDao implements PlaceDao {
         return places.remove(place.getCoordinate());
     }
 
-    private void initMap() {
+    @Override
+    public List<Place> getAllByOwner(String email) {
+        return places.values().stream()
+                .filter(place -> place.getOwnerEmail()
+                        .equals(email))
+                .collect(Collectors.toList());
+    }
+
+    private void initMaps() {
         Coordinate coordinate1 = new Coordinate(55.754695, 37.621527);
-        Place place1 = new Place(coordinate1, "ReStore", 10, "Скидки на планшеты и ноутбуки", "login1");
+        Place place1 = new Place(coordinate1, "ReStore", 10, "Скидки на планшеты и ноутбуки", "e1@mail.com");
 
         Coordinate coordinate2 = new Coordinate(55.750763, 37.596108);
-        Place place2 = new Place(coordinate2, "Starbucks", 50, "Кофе по цене чая", "owner2");
+        Place place2 = new Place(coordinate2, "Starbucks", 50, "Кофе по цене чая", "e2@mail.com");
 
         Coordinate coordinate3 = new Coordinate(55.756852, 37.614048);
-        Place place3 = new Place(coordinate3, "Vertu", 0, "Шиш вам, а не скидки", "owner3");
+        Place place3 = new Place(coordinate3, "Vertu", 0, "Шиш вам, а не скидки", "toma-vesta@mail.ru");
 
         places.put(coordinate1, place1);
         places.put(coordinate2, place2);

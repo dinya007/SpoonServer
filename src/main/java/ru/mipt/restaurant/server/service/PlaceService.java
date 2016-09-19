@@ -15,4 +15,7 @@ public interface PlaceService {
 
     Place delete(Place place);
 
+    List<Place> getAllForSession();
+
+
 }
