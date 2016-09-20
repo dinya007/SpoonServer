@@ -12,7 +12,7 @@ public class PlaceMapper {
     public static PlaceDto toDto(Place place) {
         PlaceDto placeDto = new PlaceDto();
 
-        placeDto.setCoordinate(place.getCoordinate());
+        placeDto.setCoordinates(place.getCoordinates());
         placeDto.setDescription(place.getDescription());
         placeDto.setLocationName(place.getLocationName());
         placeDto.setSale(place.getSale());
@@ -24,7 +24,7 @@ public class PlaceMapper {
     public static Place toPlace(PlaceDto placeDto) {
         Place place = new Place();
 
-        place.setCoordinate(placeDto.getCoordinate());
+        place.setCoordinates(placeDto.getCoordinates());
         place.setDescription(placeDto.getDescription());
         place.setLocationName(placeDto.getLocationName());
         place.setSale(placeDto.getSale());

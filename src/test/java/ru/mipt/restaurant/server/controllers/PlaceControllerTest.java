@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import ru.mipt.restaurant.server.controllers.dto.PlaceDto;
-import ru.mipt.restaurant.server.domain.Coordinate;
+import ru.mipt.restaurant.server.domain.Coordinates;
 
 @Ignore
 public class PlaceControllerTest {
@@ -20,13 +20,13 @@ public class PlaceControllerTest {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> allPlaces = restTemplate.getForEntity(appUrl + "/places/all", String.class);
 
-        Coordinate coordinate = new Coordinate(0.0, 0.0);
+        Coordinates coordinates = new Coordinates(0.0, 0.0);
         String description = "New Unique Description";
-        PlaceDto placeDto = new PlaceDto(coordinate, "New Location", 4, description, "login1");
+        PlaceDto placeDto = new PlaceDto(coordinates, "New Location", 4, description, "login1");
 
         Assert.assertTrue(!allPlaces.getBody().contains(description));
 
-        restTemplate.put(appUrl + "places/add", placeDto);
+        restTemplate.put(appUrl + "places/save", placeDto);
 
         allPlaces = restTemplate.getForEntity(appUrl + "/places/all", String.class);
 

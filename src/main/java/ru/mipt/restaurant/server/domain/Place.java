@@ -8,7 +8,7 @@ import org.springframework.data.cassandra.mapping.Table;
 public class Place {
 
     @PrimaryKey
-    private Coordinate coordinate;
+    private Coordinates coordinates;
     @Column("location_name")
     private String locationName;
     @Column("description")
@@ -22,20 +22,20 @@ public class Place {
     public Place() {
     }
 
-    public Place(Coordinate coordinate, String locationName, int sale, String description, String ownerEmail) {
-        this.coordinate = coordinate;
+    public Place(Coordinates coordinates, String locationName, int sale, String description, String ownerEmail) {
+        this.coordinates = coordinates;
         this.locationName = locationName;
         this.sale = sale;
         this.description = description;
         this.ownerEmail = ownerEmail;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public String getLocationName() {

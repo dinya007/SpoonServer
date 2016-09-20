@@ -30,7 +30,7 @@ public class CassandraPlaceDao implements PlaceDao {
     public List<Place> getAllInsideRectangle(Rectangle2D rectangle) {
         return getAll()
                 .parallelStream()
-                .filter(discount -> CoordinateHelper.isInside(rectangle, discount.getCoordinate()))
+                .filter(discount -> CoordinateHelper.isInside(rectangle, discount.getCoordinates()))
                 .collect(Collectors.toList());
     }
 

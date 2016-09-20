@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.mipt.restaurant.server.dao.PlaceDao;
-import ru.mipt.restaurant.server.domain.Coordinate;
+import ru.mipt.restaurant.server.domain.Coordinates;
 import ru.mipt.restaurant.server.domain.Place;
 import ru.mipt.restaurant.server.service.PlaceService;
 import ru.mipt.restaurant.server.utils.CoordinateHelper;
@@ -22,7 +22,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public List<Place> getInsideRectangle(Coordinate topLeft, Coordinate bottomRight) {
+    public List<Place> getInsideRectangle(Coordinates topLeft, Coordinates bottomRight) {
         return placeDao.getAllInsideRectangle(CoordinateHelper.toRectangle(topLeft, bottomRight));
     }
 
@@ -32,7 +32,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Place add(Place place) {
+    public Place save(Place place) {
         return placeDao.save(place);
     }
 

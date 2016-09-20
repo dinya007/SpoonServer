@@ -7,17 +7,17 @@ import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
 import java.io.Serializable;
 
 @PrimaryKeyClass
-public class Coordinate implements Serializable {
+public class Coordinates implements Serializable {
 
     @PrimaryKeyColumn(name = "latitude", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private double latitude;
     @PrimaryKeyColumn(name = "longitude", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private double longitude;
 
-    public Coordinate() {
+    public Coordinates() {
     }
 
-    public Coordinate(double latitude, double longitude) {
+    public Coordinates(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -43,7 +43,7 @@ public class Coordinate implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Coordinate that = (Coordinate) o;
+        Coordinates that = (Coordinates) o;
 
         if (Double.compare(that.latitude, latitude) != 0) return false;
         return Double.compare(that.longitude, longitude) == 0;

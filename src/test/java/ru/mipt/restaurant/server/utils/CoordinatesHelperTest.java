@@ -2,11 +2,11 @@ package ru.mipt.restaurant.server.utils;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.mipt.restaurant.server.domain.Coordinate;
+import ru.mipt.restaurant.server.domain.Coordinates;
 
 import java.awt.geom.Rectangle2D;
 
-public class CoordinateHelperTest {
+public class CoordinatesHelperTest {
 
     @Test
     public void testMapToRectangle() throws Exception {
@@ -15,8 +15,8 @@ public class CoordinateHelperTest {
         double bottomRightLatitude = 0.0;
         double bottomRightLongitude = 10.0;
 
-        Coordinate topLeft = new Coordinate(topLeftLatitude, topLeftLongitude);
-        Coordinate bottomRight = new Coordinate(bottomRightLatitude, bottomRightLongitude);
+        Coordinates topLeft = new Coordinates(topLeftLatitude, topLeftLongitude);
+        Coordinates bottomRight = new Coordinates(bottomRightLatitude, bottomRightLongitude);
 
         Rectangle2D rectangle = CoordinateHelper.toRectangle(topLeft, bottomRight);
 
@@ -31,8 +31,8 @@ public class CoordinateHelperTest {
     public void testIsInside() throws Exception {
         Rectangle2D rectangle = new Rectangle2D.Double(0.0, 20.0, 10.0, 20.0);
 
-        Coordinate insidePoint = new Coordinate(5.0, 5.0);
-        Coordinate outsidePoint = new Coordinate(19.0, 11.0);
+        Coordinates insidePoint = new Coordinates(5.0, 5.0);
+        Coordinates outsidePoint = new Coordinates(19.0, 11.0);
 
         Assert.assertTrue(CoordinateHelper.isInside(rectangle, insidePoint));
         Assert.assertFalse(CoordinateHelper.isInside(rectangle, outsidePoint));
