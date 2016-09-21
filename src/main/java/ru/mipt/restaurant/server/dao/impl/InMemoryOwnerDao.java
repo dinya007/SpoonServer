@@ -18,7 +18,7 @@ public class InMemoryOwnerDao implements OwnerDao {
 
     @Override
     public Owner save(Owner owner) {
-        return owners.put(owner.getName(), owner);
+        return owners.put(owner.getEmail(), owner);
     }
 
     @Override
