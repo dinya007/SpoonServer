@@ -1,14 +1,18 @@
 package ru.mipt.restaurant.server;
 
-//@Configuration
-//@EnableAutoConfiguration
-//@ImportResource("classpath:application-config.xml")
-//@ComponentScan(basePackages = {"ru.mipt.restaurant.server"}, excludeFilters = {
-//        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {InMemoryApplication.class, InMemoryPlaceDao.class, InMemoryOwnerDao.class})})
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
+@ComponentScan(basePackages = {"ru.mipt.restaurant.server"})
 public class Application {
 
-//    public static void main(String[] args) {
-//        SpringApplication.run(Application.class, args);
-//    }
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
 }

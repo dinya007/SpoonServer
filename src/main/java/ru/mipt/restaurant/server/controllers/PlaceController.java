@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.mipt.restaurant.server.controllers.dto.PlaceDto;
 import ru.mipt.restaurant.server.controllers.mapper.PlaceMapper;
-import ru.mipt.restaurant.server.domain.Coordinates;
+import ru.mipt.restaurant.server.domain.Location;
 import ru.mipt.restaurant.server.service.PlaceService;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class PlaceController {
     @RequestMapping("/{northLatitude}/{northLongitude}/{southLatitude}/{southLongitude}")
     public List<PlaceDto> getPlacesByCoordinates(@PathVariable("northLatitude") double northLatitude, @PathVariable("northLongitude") double northLongitude, @PathVariable("southLatitude") double southLatitude, @PathVariable("southLongitude") double southLongitude) {
         List<PlaceDto> result = placeService
-                .getInsideRectangle(new Coordinates(northLatitude, northLongitude), new Coordinates(southLatitude, southLongitude))
+                .getInsideRectangle(new Location(northLatitude, northLongitude), new Location(southLatitude, southLongitude))
                 .parallelStream()
                 .map(PlaceMapper::toDto)
                 .collect(Collectors.toList());

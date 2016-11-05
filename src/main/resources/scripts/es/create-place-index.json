@@ -1,0 +1,27 @@
+{
+  "mappings": {
+    "restaurant": {
+      "properties": {
+        "location": {
+          "type": "geo_point",
+          "lat_lon": true
+        },
+        "ownerEmail": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "description": {
+          "type": "string",
+          "analyzer": "russian"
+        },
+        "locationName": {
+          "type": "string",
+          "analyzer": "russian"
+        },
+        "sale": {
+          "type": "float"
+        }
+      }
+    }
+  }
+}

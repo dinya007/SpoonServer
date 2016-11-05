@@ -1,19 +1,10 @@
 package ru.mipt.restaurant.server.domain;
 
-import org.springframework.data.cassandra.mapping.Column;
-import org.springframework.data.cassandra.mapping.PrimaryKey;
-import org.springframework.data.cassandra.mapping.Table;
-
-@Table("owners")
 public class Owner {
 
-    @PrimaryKey("name")
     private String name;
-    @Column("email")
     private String email;
-    @Column("password")
     private String password;
-    @Column("is_confirmed")
     private boolean isConfirmed;
 
     public Owner() {

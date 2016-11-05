@@ -1,32 +1,32 @@
 package ru.mipt.restaurant.server.controllers.dto;
 
-import ru.mipt.restaurant.server.domain.Coordinates;
+import ru.mipt.restaurant.server.domain.Location;
 
 public class PlaceDto {
 
-    private Coordinates coordinates;
+    private Location location;
     private String locationName;
     private String description;
-    private int sale;
+    private float sale;
     private String ownerLogin;
 
     public PlaceDto() {
     }
 
-    public PlaceDto(Coordinates coordinates, String locationName, int sale, String description, String ownerLogin) {
-        this.coordinates = coordinates;
+    public PlaceDto(Location location, String locationName, int sale, String description, String ownerLogin) {
+        this.location = location;
         this.locationName = locationName;
         this.sale = sale;
         this.description = description;
         this.ownerLogin = ownerLogin;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getLocationName() {
@@ -45,11 +45,11 @@ public class PlaceDto {
         this.description = description;
     }
 
-    public int getSale() {
+    public float getSale() {
         return sale;
     }
 
-    public void setSale(int sale) {
+    public void setSale(float sale) {
         this.sale = sale;
     }
 

@@ -1,13 +1,13 @@
 package ru.mipt.restaurant.server.service;
 
-import ru.mipt.restaurant.server.domain.Coordinates;
+import ru.mipt.restaurant.server.domain.Location;
 import ru.mipt.restaurant.server.domain.Place;
 
 import java.util.List;
 
 public interface PlaceService {
 
-    List<Place> getInsideRectangle(Coordinates topLeft, Coordinates bottomRight);
+    List<Place> getInsideRectangle(Location topLeft, Location bottomRight);
 
     List<Place> getAll();
 

@@ -1,41 +1,31 @@
 package ru.mipt.restaurant.server.domain;
 
-import org.springframework.data.cassandra.mapping.Column;
-import org.springframework.data.cassandra.mapping.PrimaryKey;
-import org.springframework.data.cassandra.mapping.Table;
-
-@Table("discounts")
 public class Place {
 
-    @PrimaryKey
-    private Coordinates coordinates;
-    @Column("location_name")
+    private Location location;
     private String locationName;
-    @Column("description")
     private String description;
-    @Column("sale")
-    private int sale;
-    @Column("owner_login")
+    private float sale;
     private String ownerEmail;
 
 
     public Place() {
     }
 
-    public Place(Coordinates coordinates, String locationName, int sale, String description, String ownerEmail) {
-        this.coordinates = coordinates;
+    public Place(Location location, String locationName, int sale, String description, String ownerEmail) {
+        this.location = location;
         this.locationName = locationName;
         this.sale = sale;
         this.description = description;
         this.ownerEmail = ownerEmail;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getLocationName() {
@@ -54,11 +44,11 @@ public class Place {
         this.description = description;
     }
 
-    public int getSale() {
+    public float getSale() {
         return sale;
     }
 
-    public void setSale(int sale) {
+    public void setSale(float sale) {
         this.sale = sale;
     }
 

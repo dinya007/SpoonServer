@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.mipt.restaurant.server.dao.PlaceDao;
-import ru.mipt.restaurant.server.domain.Coordinates;
+import ru.mipt.restaurant.server.domain.Location;
 import ru.mipt.restaurant.server.domain.Place;
 import ru.mipt.restaurant.server.service.PlaceService;
-import ru.mipt.restaurant.server.utils.CoordinateHelper;
 
 import java.util.List;
 
@@ -22,8 +21,8 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public List<Place> getInsideRectangle(Coordinates topLeft, Coordinates bottomRight) {
-        return placeDao.getAllInsideRectangle(CoordinateHelper.toRectangle(topLeft, bottomRight));
+    public List<Place> getInsideRectangle(Location topLeft, Location bottomRight) {
+        return placeDao.getAllInsideRectangle(topLeft, bottomRight);
     }
 
     @Override

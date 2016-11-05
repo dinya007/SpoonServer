@@ -28,18 +28,20 @@ jar {
     manifest {
         attributes 'Implementation-Title': 'SpoonServer',
                 'Implementation-Version': version,
-                'Main-Class': 'ru.mipt.restaurant.server.InMamoryApplication'
+                'Main-Class': 'ru.mipt.restaurant.server.Application'
     }
 }
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-security'
-    compile 'io.netty:netty-all:4.0.9.Final'
-    compile 'org.springframework.data:spring-data-cassandra:1.4.2.RELEASE'
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'org.elasticsearch:elasticsearch:2.4.1'
+    compile 'org.locationtech.spatial4j:spatial4j:0.6'
+    compile ('com.vividsolutions:jts:1.13') {
+        exclude group: "xerces"
+    }
 
+    testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 task wrapper(type: Wrapper) {
