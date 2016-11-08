@@ -52,7 +52,7 @@ public class InMemoryOwnerDao implements OwnerDao {
 
         Owner toma = new Owner();
         toma.setName("toma");
-        toma.setPassword("tomTomy4");
+        toma.setPassword("123456");
         toma.setEmail("toma-vesta@mail.ru");
         toma.setConfirmed(false);
 
