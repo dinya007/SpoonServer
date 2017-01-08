@@ -1,22 +1,24 @@
 package ru.mipt.restaurant.server.controllers.dto;
 
 import ru.mipt.restaurant.server.domain.Location;
+import ru.mipt.restaurant.server.domain.Sale;
+
+import java.util.List;
 
 public class PlaceDto {
 
     private Location location;
     private String locationName;
     private String description;
-    private float sale;
+    private List<Sale> sales;
     private String ownerLogin;
 
     public PlaceDto() {
     }
 
-    public PlaceDto(Location location, String locationName, int sale, String description, String ownerLogin) {
+    public PlaceDto(Location location, String locationName, String description, String ownerLogin) {
         this.location = location;
         this.locationName = locationName;
-        this.sale = sale;
         this.description = description;
         this.ownerLogin = ownerLogin;
     }
@@ -45,19 +47,19 @@ public class PlaceDto {
         this.description = description;
     }
 
-    public float getSale() {
-        return sale;
-    }
-
-    public void setSale(float sale) {
-        this.sale = sale;
-    }
-
     public String getOwnerLogin() {
         return ownerLogin;
     }
 
     public void setOwnerLogin(String ownerLogin) {
         this.ownerLogin = ownerLogin;
+    }
+
+    public List<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(List<Sale> sales) {
+        this.sales = sales;
     }
 }

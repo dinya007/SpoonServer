@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PlaceService {
 
-    List<Place> getInsideRectangle(Location topLeft, Location bottomRight);
+    List<Place> getInArea(Location topLeft, Location bottomRight);
 
     List<Place> getAll();
 

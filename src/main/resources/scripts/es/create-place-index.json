@@ -18,8 +18,17 @@
           "type": "string",
           "analyzer": "russian"
         },
-        "sale": {
-          "type": "float"
+        "sales": {
+          "type": "nested",
+          "properties": {
+            "amount": {
+              "type": "integer"
+            },
+            "description": {
+              "type": "string",
+              "analyzer": "russian"
+            }
+          }
         }
       }
     }

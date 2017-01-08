@@ -1,6 +1,5 @@
 package ru.mipt.restaurant.server.dao.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -19,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
+import ru.mipt.restaurant.server.domain.Owner;
 import ru.mipt.restaurant.server.domain.Place;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -41,11 +40,6 @@ public class ElasticPlaceDao implements PlaceDao {
     private SearchRequestBuilder search;
 
     public ElasticPlaceDao() {
-        init();
-    }
-
-    @PostConstruct
-    private void init() {
         Settings settings = Settings.builder()
                 .put("cluster.name", "spoon-server")
                 .put("client.transport.sniff", true)
@@ -67,32 +61,6 @@ public class ElasticPlaceDao implements PlaceDao {
         boundingBoxFilter = new GeoBoundingBoxQueryBuilder("location");
     }
 
-//    public static void main(String[] args) throws UnknownHostException, JsonProcessingException {
-//        ElasticPlaceDao elasticPlaceDao = new ElasticPlaceDao();
-//
-//        Location location1 = new Location(55.754695, 37.621527);
-//        Place place1 = new Place(location1, "ReStore", 10, "Скидки на планшеты и ноутбуки", "e1@mail.com");
-//
-//        Location location2 = new Location(55.750763, 37.596108);
-//        Place place2 = new Place(location2, "Starbucks", 50, "Кофе по цене чая", "e2@mail.com");
-//
-//        Location location3 = new Location(55.756852, 37.614048);
-//        Place place3 = new Place(location3, "Vertu", 0, "Шиш вам, а не скидки", "toma-vesta@mail.ru");
-//
-//        Location location4 = new Location(0.0, 0.0);
-//        Place place4 = new Place(location4, "Чебуреки", 10, "Чебуречная в РТС", "toma-vesta@mail.ru");
-//
-////        elasticPlaceDao.save(place1);
-////        elasticPlaceDao.save(place2);
-////        elasticPlaceDao.save(place3);
-////        elasticPlaceDao.save(place4);
-////        System.out.println(elasticPlaceDao.getAllInsideRectangle(new Location(56.0, 37.0), new Location(55.0, 38.0)));
-////        System.out.println(elasticPlaceDao.getAll());
-////        System.out.println(elasticPlaceDao.getAllByOwner("toma-vesta@mail.ru"));
-////        elasticPlaceDao.delete(place1);
-//
-//    }
-
     @Override
     public List<Place> getAll() {
         logger.debug("Box request: {}", search.internalBuilder());
@@ -102,7 +70,7 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public List<Place> getAllInsideRectangle(Location topLeft, Location bottomRight) {
+    public List<Place> getAllInArea(Location topLeft, Location bottomRight) {
         GeoBoundingBoxQueryBuilder queryBuilder = boundingBoxFilter
                 .topLeft(topLeft.getLat(), topLeft.getLon())
                 .bottomRight(bottomRight.getLat(), bottomRight.getLon());
@@ -162,6 +130,11 @@ public class ElasticPlaceDao implements PlaceDao {
         logger.debug("Response: {}", response);
 
         return mapResults(response.getHits().hits());
+    }
+
+    @Override
+    public List<Place> getAllByOwner(Owner owner) {
+        return getAllByOwner(owner.getEmail());
     }
 
     private List<Place> mapResults(SearchHit[] results) {

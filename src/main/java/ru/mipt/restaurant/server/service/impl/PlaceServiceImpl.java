@@ -21,8 +21,8 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public List<Place> getInsideRectangle(Location topLeft, Location bottomRight) {
-        return placeDao.getAllInsideRectangle(topLeft, bottomRight);
+    public List<Place> getInArea(Location topLeft, Location bottomRight) {
+        return placeDao.getAllInArea(topLeft, bottomRight);
     }
 
     @Override

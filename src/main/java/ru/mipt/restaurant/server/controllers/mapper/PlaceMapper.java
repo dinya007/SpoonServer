@@ -15,7 +15,7 @@ public class PlaceMapper {
         placeDto.setLocation(place.getLocation());
         placeDto.setDescription(place.getDescription());
         placeDto.setLocationName(place.getLocationName());
-        placeDto.setSale(place.getSale());
+        placeDto.setSales(place.getSales());
         placeDto.setOwnerLogin(place.getOwnerEmail());
 
         return placeDto;
@@ -27,7 +27,7 @@ public class PlaceMapper {
         place.setLocation(placeDto.getLocation());
         place.setDescription(placeDto.getDescription());
         place.setLocationName(placeDto.getLocationName());
-        place.setSale(placeDto.getSale());
+        place.setSales(placeDto.getSales());
         place.setOwnerEmail(placeDto.getOwnerLogin());
 
         return place;
