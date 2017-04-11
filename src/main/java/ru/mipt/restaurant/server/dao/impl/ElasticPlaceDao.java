@@ -41,7 +41,7 @@ public class ElasticPlaceDao implements PlaceDao {
 
     public ElasticPlaceDao() {
         Settings settings = Settings.builder()
-                .put("cluster.name", "spoon-server")
+                .put("cluster.name", "restaurant-server")
                 .put("client.transport.sniff", true)
                 .build();
 

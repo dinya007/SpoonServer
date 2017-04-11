@@ -10,7 +10,7 @@ import ru.mipt.restaurant.server.domain.Sale;
 
 import java.util.List;
 
-public class ElasticPlaceDaoTest {
+public class ElasticPlaceDaoTest extends ElasticDaoTest {
 
     Location location1 = new Location(55.754695, 37.621527);
     Place place1 = new Place(location1, "ReStore", "Скидки на планшеты и ноутбуки", "e1@mail.com");
@@ -37,22 +37,16 @@ public class ElasticPlaceDaoTest {
     public void testGetAll() throws Exception {
         ElasticPlaceDao elasticPlaceDao = new ElasticPlaceDao();
 
-
         elasticPlaceDao.save(place1);
         elasticPlaceDao.save(place2);
 
-        Thread.currentThread().sleep(1000);
+        Thread.sleep(1000);
 
         List<Place> result = elasticPlaceDao.getAll();
         Assert.assertEquals(2, result.size());
 
         Assert.assertTrue(result.contains(place1));
         Assert.assertTrue(result.contains(place2));
-
-        elasticPlaceDao.delete(place1);
-        elasticPlaceDao.delete(place2);
-        Thread.currentThread().sleep(1000);
-
     }
 
     @Test
@@ -63,7 +57,7 @@ public class ElasticPlaceDaoTest {
         elasticPlaceDao.save(place2);
         elasticPlaceDao.save(place3);
         elasticPlaceDao.save(place4);
-        Thread.currentThread().sleep(1000);
+        Thread.sleep(10000);
 
         List<Place> result = elasticPlaceDao.getAllInArea(new Location(56.0, 37.0), new Location(55.0, 38.0));
 
@@ -71,13 +65,6 @@ public class ElasticPlaceDaoTest {
         Assert.assertTrue(result.contains(place1));
         Assert.assertTrue(result.contains(place2));
         Assert.assertTrue(result.contains(place3));
-
-        elasticPlaceDao.delete(place1);
-        elasticPlaceDao.delete(place2);
-        elasticPlaceDao.delete(place3);
-        elasticPlaceDao.delete(place4);
-        Thread.currentThread().sleep(1000);
-
     }
 
 }
