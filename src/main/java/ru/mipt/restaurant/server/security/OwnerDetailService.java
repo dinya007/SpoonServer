@@ -1,16 +1,16 @@
 package ru.mipt.restaurant.server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import ru.mipt.restaurant.server.domain.Owner;
 import ru.mipt.restaurant.server.service.OwnerService;
 
-@Configuration
+@Service
 public class OwnerDetailService implements UserDetailsService {
 
     @Autowired
