@@ -23,6 +23,9 @@ public class AuthControllerTest {
         ResponseEntity<String> registerResponse = restTemplate.postForEntity(appUrl + "/authentication/register", new RegisterDto("newLogin", "newEmail", "newPassword"), String.class);
         System.out.println(registerResponse);
 
+        ResponseEntity<String> optionsResponse = restTemplate.exchange(appUrl + "/authentication/login?username=newEmail&password=newPassword", HttpMethod.OPTIONS, null, String.class);
+        System.out.println("Headers: " + optionsResponse.getHeaders());
+
         ResponseEntity<String> response = restTemplate.postForEntity(appUrl + "/authentication/login?username=newEmail&password=newPassword", "", String.class);
         System.out.println(response);
 

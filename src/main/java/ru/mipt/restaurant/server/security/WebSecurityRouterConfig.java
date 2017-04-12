@@ -13,6 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import javax.servlet.Filter;
 
 @EnableWebSecurity
 @Configuration
@@ -25,8 +31,6 @@ public class WebSecurityRouterConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationFailureHandler authenticationFailureHandler;
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-
     @Autowired
     private UserDetailsService userDetailService;
     @Autowired
@@ -41,6 +45,7 @@ public class WebSecurityRouterConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.formLogin().successHandler(authenticationSuccessHandler);
         http.formLogin().failureHandler(authenticationFailureHandler);
+        http.addFilterBefore(corsFilter(), WebAsyncManagerIntegrationFilter.class);
     }
 
     @Autowired
@@ -48,6 +53,23 @@ public class WebSecurityRouterConfig extends WebSecurityConfigurerAdapter {
         auth
                 .authenticationProvider(authenticationProvider)
                 .userDetailsService(userDetailService);
+    }
+
+    private Filter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://127.0.0.1");
+        config.addAllowedOrigin("http://127.0.0.1/");
+        config.addAllowedOrigin("http://127.0.0.1:80");
+        config.addAllowedOrigin("http://localhost");
+        config.addAllowedOrigin("http://localhost/");
+        config.addAllowedOrigin("http://localhost:80");
+        config.addAllowedHeader("*");
+        config.addAllowedHeader("X-Custom-Header");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 }

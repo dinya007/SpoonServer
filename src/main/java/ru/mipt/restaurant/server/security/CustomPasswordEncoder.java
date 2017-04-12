@@ -16,8 +16,7 @@ public class CustomPasswordEncoder implements PasswordEncoder {
             sha512.update(rawPassword.toString().getBytes());
             StringBuilder hexData = new StringBuilder();
             byte[] data = sha512.digest();
-            for (int byteIndex = 0; byteIndex < data.length; byteIndex++)
-                hexData.append(Integer.toString((data[byteIndex] & 0xff) + 0x100, 16).substring(1));
+            for (byte aData : data) hexData.append(Integer.toString((aData & 0xff) + 0x100, 16).substring(1));
 
             return hexData.toString();
         } catch (NoSuchAlgorithmException e) {

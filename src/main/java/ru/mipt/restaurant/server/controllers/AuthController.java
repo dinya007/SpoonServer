@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.mipt.restaurant.server.controllers.dto.RegisterDto;
 import ru.mipt.restaurant.server.service.OwnerService;
 import ru.mipt.restaurant.server.utils.OwnerHelper;
@@ -32,7 +29,6 @@ public class AuthController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
     private boolean isValidParams(RegisterDto registerDto) {
         return !(StringUtils.isEmpty(registerDto.getName())

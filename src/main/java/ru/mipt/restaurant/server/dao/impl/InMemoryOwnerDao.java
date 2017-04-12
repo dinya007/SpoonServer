@@ -1,5 +1,7 @@
 package ru.mipt.restaurant.server.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.mipt.restaurant.server.dao.OwnerDao;
 import ru.mipt.restaurant.server.domain.Owner;
@@ -11,7 +13,11 @@ public class InMemoryOwnerDao implements OwnerDao {
 
     private final ConcurrentHashMap<String, Owner> owners;
 
-    public InMemoryOwnerDao() {
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public InMemoryOwnerDao(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         owners = new ConcurrentHashMap<>();
         initOwners();
     }
@@ -34,25 +40,25 @@ public class InMemoryOwnerDao implements OwnerDao {
     private void initOwners() {
         Owner owner1 = new Owner();
         owner1.setName("login1");
-        owner1.setPassword("password1");
+        owner1.setPassword(passwordEncoder.encode("password1"));
         owner1.setEmail("e1@mail.com");
         owner1.setConfirmed(false);
 
         Owner owner2 = new Owner();
         owner2.setName("login2");
-        owner2.setPassword("password2");
+        owner2.setPassword(passwordEncoder.encode("password2"));
         owner2.setEmail("e2@mail.com");
         owner2.setConfirmed(false);
 
         Owner owner3 = new Owner();
         owner3.setName("login3");
-        owner3.setPassword("password3");
+        owner3.setPassword(passwordEncoder.encode("password3"));
         owner3.setEmail("e3@mail.com");
         owner3.setConfirmed(true);
 
         Owner toma = new Owner();
         toma.setName("toma");
-        toma.setPassword("123456");
+        toma.setPassword(passwordEncoder.encode("123456"));
         toma.setEmail("toma-vesta@mail.ru");
         toma.setConfirmed(false);
 
