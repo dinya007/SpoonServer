@@ -2,6 +2,7 @@ package ru.mipt.restaurant.server.utils;
 
 import ru.mipt.restaurant.server.domain.Location;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class CoordinateHelper {
@@ -24,4 +25,8 @@ public class CoordinateHelper {
                 && rectangle.getY() - rectangle.getHeight() <= location.getLat();
     }
 
+    public static boolean isInside(Location topLeft, Location bottomRight, Location location) {
+        return location.getLon() <= topLeft.getLon() && location.getLat() >= topLeft.getLat()
+                && location.getLon() >= bottomRight.getLon() && location.getLat() <= bottomRight.getLat();
+    }
 }
