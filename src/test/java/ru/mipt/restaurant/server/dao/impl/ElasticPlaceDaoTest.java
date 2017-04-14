@@ -12,20 +12,20 @@ import java.util.List;
 
 public class ElasticPlaceDaoTest extends ElasticDaoTest {
 
-    Location location1 = new Location(55.754695, 37.621527);
-    Place place1 = new Place(location1, "ReStore", "Скидки на планшеты и ноутбуки", "e1@mail.com");
+    private Location location1 = new Location(55.754695, 37.621527);
+    private Place place1 = new Place(location1, "ReStore", "Address 1", "Скидки на планшеты и ноутбуки", "e1@mail.com");
 
-    Location location2 = new Location(55.750763, 37.596108);
-    Place place2 = new Place(location2, "Starbucks", "Кофе по цене чая", "e2@mail.com");
+    private Location location2 = new Location(55.750763, 37.596108);
+    private Place place2 = new Place(location2, "Starbucks", "Address 2","Кофе по цене чая", "e2@mail.com");
 
-    Location location3 = new Location(55.756852, 37.614048);
-    Place place3 = new Place(location3, "Vertu", "Шиш вам, а не скидки", "toma-vesta@mail.ru");
+    private Location location3 = new Location(55.756852, 37.614048);
+    private Place place3 = new Place(location3, "Vertu", "Address 3","Шиш вам, а не скидки", "toma-vesta@mail.ru");
 
-    Location location4 = new Location(0.0, 0.0);
-    Place place4 = new Place(location4, "Чебуреки", "Чебуречная в РТС", "toma-vesta@mail.ru");
+    private Location location4 = new Location(0.0, 0.0);
+    private Place place4 = new Place(location4, "Чебуреки", "Address 4","Чебуречная в РТС", "toma-vesta@mail.ru");
 
-    Sale sale1 = new Sale(10, "some description");
-    Sale sale2 = new Sale(20, "other description");
+    private Sale sale1 = new Sale("some description", true);
+    private Sale sale2 = new Sale("other description", true);
 
     @Before
     public void setUp() throws Exception {
@@ -65,6 +65,52 @@ public class ElasticPlaceDaoTest extends ElasticDaoTest {
         Assert.assertTrue(result.contains(place1));
         Assert.assertTrue(result.contains(place2));
         Assert.assertTrue(result.contains(place3));
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        ElasticPlaceDao elasticPlaceDao = new ElasticPlaceDao();
+        elasticPlaceDao.save(place1);
+        Thread.sleep(1000);
+
+        String address = "new address";
+        place1.setAddress(address);
+        elasticPlaceDao.save(place1);
+        Thread.sleep(1000);
+
+        List<Place> places = elasticPlaceDao.getAll();
+
+        Assert.assertEquals(1, places.size());
+        Assert.assertEquals(place1, places.get(0));
+        Assert.assertEquals(address, places.get(0).getAddress());
+    }
+
+    @Test
+    public void testMultipleUpdates() throws Exception {
+        ElasticPlaceDao elasticPlaceDao = new ElasticPlaceDao();
+        elasticPlaceDao.save(place1);
+        elasticPlaceDao.save(place2);
+        elasticPlaceDao.save(place3);
+        elasticPlaceDao.save(place4);
+        Thread.sleep(1000);
+
+        String address1 = "new address 1";
+        String address4 = "new address 4";
+        place1.setAddress(address1);
+        place4.setAddress(address4);
+        elasticPlaceDao.save(place1);
+        elasticPlaceDao.save(place2);
+        elasticPlaceDao.save(place3);
+        elasticPlaceDao.save(place4);
+        Thread.sleep(1000);
+
+        List<Place> places = elasticPlaceDao.getAll();
+
+        Assert.assertEquals(4, places.size());
+        Assert.assertEquals(address1, places.get(places.indexOf(place1)).getAddress());
+        Assert.assertEquals(place2.getAddress(), places.get(places.indexOf(place2)).getAddress());
+        Assert.assertEquals(place3.getAddress(), places.get(places.indexOf(place3)).getAddress());
+        Assert.assertEquals(address4, places.get(places.indexOf(place4)).getAddress());
     }
 
 }

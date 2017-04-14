@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mipt.restaurant.server.controllers.dto.PlaceDto;
-import ru.mipt.restaurant.server.controllers.mapper.PlaceMapper;
 import ru.mipt.restaurant.server.domain.Location;
+import ru.mipt.restaurant.server.domain.Place;
 import ru.mipt.restaurant.server.service.PlaceService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/places")
@@ -28,23 +26,17 @@ public class PlaceController {
     }
 
     @RequestMapping("/{northLatitude}/{northLongitude}/{southLatitude}/{southLongitude}")
-    public List<PlaceDto> getPlacesByCoordinates(@PathVariable("northLatitude") double northLatitude, @PathVariable("northLongitude") double northLongitude, @PathVariable("southLatitude") double southLatitude, @PathVariable("southLongitude") double southLongitude) {
-        List<PlaceDto> result = placeService
-                .getInArea(new Location(northLatitude, northLongitude), new Location(southLatitude, southLongitude))
-                .parallelStream()
-                .map(PlaceMapper::toDto)
-                .collect(Collectors.toList());
+    public List<Place> getPlacesByCoordinates(@PathVariable("northLatitude") double northLatitude, @PathVariable("northLongitude") double northLongitude, @PathVariable("southLatitude") double southLatitude, @PathVariable("southLongitude") double southLongitude) {
+        List<Place> result = placeService
+                .getInArea(new Location(northLatitude, northLongitude), new Location(southLatitude, southLongitude));
         logger.debug(result.toString());
         return result;
     }
 
 
     @RequestMapping("/all")
-    public List<PlaceDto> getAll() {
-        return placeService.getAll()
-                .parallelStream()
-                .map(PlaceMapper::toDto)
-                .collect(Collectors.toList());
+    public List<Place> getAll() {
+        return placeService.getAll();
     }
 
 }

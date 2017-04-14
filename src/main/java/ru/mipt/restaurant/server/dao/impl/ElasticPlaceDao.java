@@ -29,7 +29,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Profile({"testing", "production"})
+//@Profile({"testing", "production"})
 @Repository
 public class ElasticPlaceDao implements PlaceDao {
 
@@ -90,8 +90,12 @@ public class ElasticPlaceDao implements PlaceDao {
     public Place save(Place place) {
         try {
             IndexRequestBuilder indexRequestBuilder = index.setSource(mapper.writeValueAsString(place));
+            if (place.getId() != null) {
+                index.setId(place.getId());
+            }
             logger.debug("Saving new place. {}", place);
             IndexResponse response = indexRequestBuilder.get();
+            place.setId(response.getId());
             logger.debug("Response. {}", response);
             return place;
         } catch (Exception e) {
@@ -143,7 +147,9 @@ public class ElasticPlaceDao implements PlaceDao {
         List<Place> result = new ArrayList<>();
         for (SearchHit searchHitField : results) {
             try {
-                result.add(mapper.readValue(searchHitField.getSourceAsString(), Place.class));
+                Place place = mapper.readValue(searchHitField.getSourceAsString(), Place.class);
+                place.setId(searchHitField.getId());
+                result.add(place);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -4,8 +4,10 @@ import java.util.List;
 
 public class Place {
 
+    private String id;
     private Location location;
     private String locationName;
+    private String address;
     private String description;
     private String ownerEmail;
     private List<Sale> sales;
@@ -13,11 +15,20 @@ public class Place {
     public Place() {
     }
 
-    public Place(Location location, String locationName, String description, String ownerEmail) {
+    public Place(Location location, String locationName,String address, String description, String ownerEmail) {
         this.location = location;
         this.locationName = locationName;
+        this.address = address;
         this.description = description;
         this.ownerEmail = ownerEmail;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Location getLocation() {
@@ -52,6 +63,14 @@ public class Place {
         this.ownerEmail = ownerEmail;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public List<Sale> getSales() {
         return sales;
     }
@@ -65,6 +84,7 @@ public class Place {
         return "Place{" +
                 "location=" + location +
                 ", locationName='" + locationName + '\'' +
+                ", address='" + address + '\'' +
                 ", description='" + description + '\'' +
                 ", ownerEmail='" + ownerEmail + '\'' +
                 ", sales=" + sales +

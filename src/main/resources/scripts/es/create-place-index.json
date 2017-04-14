@@ -18,15 +18,19 @@
           "type": "string",
           "analyzer": "russian"
         },
+        "address": {
+          "type": "string",
+          "analyzer": "russian"
+        },
         "sales": {
           "type": "nested",
           "properties": {
-            "amount": {
-              "type": "integer"
-            },
             "description": {
               "type": "string",
               "analyzer": "russian"
+            },
+            "active": {
+              "type": "boolean"
             }
           }
         }
