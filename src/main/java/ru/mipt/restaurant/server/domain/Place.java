@@ -22,7 +22,7 @@ public class Place {
     public Place() {
     }
 
-    public Place(Location location, String locationName,String address, String description, String ownerEmail) {
+    public Place(Location location, String locationName, String address, String description, String ownerEmail) {
         this.location = location;
         this.locationName = locationName;
         this.address = address;

@@ -1,17 +1,13 @@
 package ru.mipt.restaurant.server.dao.impl;
 
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Owner;
 import ru.mipt.restaurant.server.domain.Place;
-import ru.mipt.restaurant.server.domain.Sale;
 import ru.mipt.restaurant.server.utils.CoordinateHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -19,7 +15,7 @@ import java.util.stream.Collectors;
 //@Component
 public class InMemoryPlaceDao implements PlaceDao {
 
-    private final ConcurrentHashMap<Location, Place> places;
+    private final ConcurrentHashMap<String, Place> places;
 
     public InMemoryPlaceDao() {
         places = new ConcurrentHashMap<>();
@@ -40,31 +36,26 @@ public class InMemoryPlaceDao implements PlaceDao {
 
     @Override
     public Place save(Place place) {
-        return places.put(place.getLocation(), place);
+        return places.put(UUID.randomUUID().toString(), place);
     }
 
     @Override
-    public Place delete(Place place) {
-        return places.remove(place.getLocation());
+    public Place get(String id) {
+        return places.get(id);
+    }
+
+    @Override
+    public String delete(String id) {
+        places.remove(id);
+        return id;
     }
 
     @Override
     public List<Place> getAllByOwner(String email) {
-        try {
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return places.values().stream()
                 .filter(place -> place.getOwnerEmail()
                         .equals(email))
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public List<Place> getAllByOwner(Owner owner) {
-        return getAllByOwner(owner.getEmail());
-    }
-
 
 }

@@ -3,6 +3,8 @@ package ru.mipt.restaurant.server.dao.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetRequestBuilder;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -15,11 +17,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Owner;
 import ru.mipt.restaurant.server.domain.Place;
 
 import javax.annotation.PreDestroy;
@@ -40,6 +40,8 @@ public class ElasticPlaceDao implements PlaceDao {
     private GeoBoundingBoxQueryBuilder boundingBoxFilter;
     private TransportClient client;
     private SearchRequestBuilder search;
+    private GetRequestBuilder getById;
+
 
     public ElasticPlaceDao() {
         Settings settings = Settings.builder()
@@ -53,6 +55,8 @@ public class ElasticPlaceDao implements PlaceDao {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
+        getById = client.prepareGet(Index.PLACES.getName(), Type.RESTAURANT.getName(), null);
 
         index = client.prepareIndex(Index.PLACES.getName(), Type.RESTAURANT.getName());
 
@@ -105,26 +109,21 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public Place delete(Place place) {
-        SearchRequestBuilder searchRequestBuilder = search.setQuery(QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("location.lat", place.getLocation().getLat()))
-                .must(QueryBuilders.termQuery("location.lon", place.getLocation().getLon()))
-        );
-        logger.debug("Request by coordinates: {}", searchRequestBuilder.internalBuilder());
-        SearchResponse response = searchRequestBuilder.get();
+    public Place get(String id) {
+        GetRequestBuilder getRequestBuilder = getById.setId(id);
+        logger.debug("Request by id: {}", getRequestBuilder);
+        GetResponse response = getRequestBuilder.get();
         logger.debug("Response: {}", response);
+        return mapPlace(response.getSourceAsString());
+    }
 
-
-        if (response.getHits().hits().length != 1)
-            throw new RuntimeException("Search result hits not equal 1: " + response);
-
-
-        DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete(Index.PLACES.getName(), Type.RESTAURANT.getName(), response.getHits().hits()[0].getId());
+    @Override
+    public String delete(String id) {
+        DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete(Index.PLACES.getName(), Type.RESTAURANT.getName(), id);
         logger.debug("Delete request: {}", deleteRequestBuilder);
         DeleteResponse deleteResponse = deleteRequestBuilder.get();
         logger.debug("Delete response: {}", deleteResponse);
-
-        return place;
+        return id;
     }
 
     @Override
@@ -138,24 +137,22 @@ public class ElasticPlaceDao implements PlaceDao {
         return mapResults(response.getHits().hits());
     }
 
-    @Override
-    public List<Place> getAllByOwner(Owner owner) {
-        return getAllByOwner(owner.getEmail());
-    }
-
     private List<Place> mapResults(SearchHit[] results) {
         List<Place> result = new ArrayList<>();
         for (SearchHit searchHitField : results) {
-            try {
-                Place place = mapper.readValue(searchHitField.getSourceAsString(), Place.class);
-                place.setId(searchHitField.getId());
-                result.add(place);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Place place = mapPlace(searchHitField.getSourceAsString());
+            place.setId(searchHitField.getId());
+            result.add(place);
         }
-
         return result;
+    }
+
+    private Place mapPlace(String jsonPlace) {
+        try {
+            return mapper.readValue(jsonPlace, Place.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PreDestroy

@@ -1,5 +1,6 @@
 package ru.mipt.restaurant.server.service.impl;
 
+import org.elasticsearch.common.collect.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,17 +48,22 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Place update(Place place) {
+    public Place update(Place place, boolean updateAddress) {
+        if (updateAddress) {
+            Tuple<String, Location> location = geocode(place.getAddress());
+            place.setAddress(location.v1());
+            place.setLocation(location.v2());
+        }
         return placeDao.save(place);
     }
 
     @Override
     public Place create(String name, String address, String description) {
-        Location location = geocodeService.geocode(address);
+        Tuple<String, Location> location = geocode(address);
         Place place = Place.builder()
                 .locationName(name)
-                .location(location)
-                .address(geocodeService.geocode(location))
+                .location(location.v2())
+                .address(location.v1())
                 .description(description)
                 .ownerEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .build();
@@ -65,14 +71,20 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Place delete(Place place) {
-        return placeDao.delete(place);
+    public String delete(String id) {
+        return placeDao.delete(id);
     }
 
     @Override
     public List<Place> getAllForSession() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return placeDao.getAllByOwner(email);
+    }
+
+    private Tuple<String, Location> geocode(String address) {
+        Location location = geocodeService.geocode(address);
+        String geocodedAddress = geocodeService.geocode(location);
+        return new Tuple<>(geocodedAddress, location);
     }
 
     private void initPlaces() {
@@ -93,11 +105,11 @@ public class PlaceServiceImpl implements PlaceService {
         Location location5 = new Location(55.615384, 37.591808);
         Place place5 = new Place(location5, "Магазин", "Чертановская улица 36 с 1 Москва", "Просто продукты", "toma-vesta@mail.ru");
 
-        update(place1);
-        update(place2);
-        update(place3);
-        update(place4);
-        update(place5);
+        update(place1, false);
+        update(place2, false);
+        update(place3, false);
+        update(place4, false);
+        update(place5, false);
     }
 
 }

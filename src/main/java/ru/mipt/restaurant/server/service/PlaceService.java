@@ -11,11 +11,11 @@ public interface PlaceService {
 
     List<Place> getAll();
 
-    Place update(Place place);
+    Place update(Place place, boolean updateAddress);
 
     Place create(String name, String address, String description);
 
-    Place delete(Place place);
+    String delete(String id);
 
     List<Place> getAllForSession();
 

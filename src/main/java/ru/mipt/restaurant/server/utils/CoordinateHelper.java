@@ -2,7 +2,6 @@ package ru.mipt.restaurant.server.utils;
 
 import ru.mipt.restaurant.server.domain.Location;
 
-import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class CoordinateHelper {
