@@ -11,7 +11,9 @@ public interface PlaceService {
 
     List<Place> getAll();
 
-    Place save(Place place);
+    Place update(Place place);
+
+    Place create(String name, String address, String description);
 
     Place delete(Place place);
 
