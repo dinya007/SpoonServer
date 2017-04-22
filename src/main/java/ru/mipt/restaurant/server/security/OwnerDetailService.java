@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import ru.mipt.restaurant.server.domain.Owner;
 import ru.mipt.restaurant.server.service.OwnerService;
 
+import java.util.stream.Collectors;
+
 @Service
 public class OwnerDetailService implements UserDetailsService {
 
@@ -21,8 +23,9 @@ public class OwnerDetailService implements UserDetailsService {
         Owner owner = ownerService.get(username);
 
         if (owner != null) {
+            String[] roles = owner.getRoles().stream().map(Role::name).collect(Collectors.toList()).toArray(new String[]{});
             return new User(owner.getEmail(), owner.getPassword(), true, true, true, true,
-                    AuthorityUtils.createAuthorityList(Roles.OWNER.name()));
+                    AuthorityUtils.createAuthorityList(roles));
         } else {
             throw new UsernameNotFoundException("could not find the user '"
                     + username + "'");

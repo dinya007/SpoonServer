@@ -15,6 +15,7 @@ import ru.mipt.restaurant.server.service.PlaceService;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {
@@ -33,13 +34,23 @@ public class PlaceServiceImpl implements PlaceService {
     @PostConstruct
     private void init() {
         if ("development".equals(environment.getActiveProfiles()[0])) {
-//            initPlaces();
+            if (placeDao.getAll().isEmpty()){
+                initPlaces();
+            }
         }
     }
 
     @Override
-    public List<Place> getInArea(Location topLeft, Location bottomRight) {
-        return placeDao.getAllInArea(topLeft, bottomRight);
+    public List<Place> getWithActiveSalesInArea(Location topLeft, Location bottomRight) {
+        return placeDao.getAllInArea(topLeft, bottomRight)
+                .stream().filter(place -> {
+                    List<Sale> sales = place.getSales();
+                    if (sales == null) return false;
+                    for (Sale sale : sales) {
+                        if (sale.isActive()) return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
     }
 
     @Override

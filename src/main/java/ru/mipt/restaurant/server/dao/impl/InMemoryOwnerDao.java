@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.mipt.restaurant.server.dao.OwnerDao;
 import ru.mipt.restaurant.server.domain.Owner;
+import ru.mipt.restaurant.server.security.Role;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,11 +39,13 @@ public class InMemoryOwnerDao implements OwnerDao {
     }
 
     private void initOwners() {
-        Owner owner1 = new Owner();
-        owner1.setName("login1");
-        owner1.setPassword(passwordEncoder.encode("password1"));
-        owner1.setEmail("e1@mail.com");
-        owner1.setConfirmed(false);
+        Owner owner1 = Owner.builder()
+                .name("login1")
+                .password(passwordEncoder.encode("password1"))
+                .email("e1@mail.com")
+                .isConfirmed(false)
+                .role(Role.VISITOR)
+                .build();
 
         Owner owner2 = new Owner();
         owner2.setName("login2");
@@ -56,11 +59,13 @@ public class InMemoryOwnerDao implements OwnerDao {
         owner3.setEmail("e3@mail.com");
         owner3.setConfirmed(true);
 
-        Owner toma = new Owner();
-        toma.setName("toma");
-        toma.setPassword(passwordEncoder.encode("123456"));
-        toma.setEmail("toma-vesta@mail.ru");
-        toma.setConfirmed(false);
+        Owner toma = Owner.builder()
+                .name("toma")
+                .password(passwordEncoder.encode("123456"))
+                .email("toma-vesta@mail.ru")
+                .role(Role.OWNER)
+                .isConfirmed(false)
+                .build();
 
         owners.put(owner1.getEmail(), owner1);
         owners.put(owner2.getEmail(), owner2);

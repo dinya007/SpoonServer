@@ -42,7 +42,7 @@ public class WebSecurityRouterConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/secure/**").authenticated();
+        http.authorizeRequests().antMatchers("/secure/**").hasAnyAuthority(Role.OWNER.name(), Role.ADMIN.name());
         http.csrf().disable();
         http.formLogin().loginProcessingUrl("/authentication/login");
         http.logout().logoutUrl("/authentication/logout").logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)));
