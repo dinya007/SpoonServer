@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.service.PlaceService;
 
 import javax.servlet.http.HttpSession;
@@ -29,12 +29,12 @@ public class PlaceController {
     }
 
     @RequestMapping("/{northLatitude}/{northLongitude}/{southLatitude}/{southLongitude}")
-    public List<Place> getPlacesByCoordinates(@PathVariable("northLatitude") double northLatitude, @PathVariable("northLongitude") double northLongitude, @PathVariable("southLatitude") double southLatitude, @PathVariable("southLongitude") double southLongitude, HttpSession session) {
+    public List<OwnerPlace> getPlacesByCoordinates(@PathVariable("northLatitude") double northLatitude, @PathVariable("northLongitude") double northLongitude, @PathVariable("southLatitude") double southLatitude, @PathVariable("southLongitude") double southLongitude, HttpSession session) {
         logger.debug("Session attribute: {}", session.getAttribute("my_attr"));
         counter.computeIfAbsent(session.getId(), key -> 0);
         counter.compute(session.getId(), (key, value) -> ++value);
         session.setAttribute("my_attr", counter.get(session.getId()));
-        List<Place> result = placeService
+        List<OwnerPlace> result = placeService
                 .getWithActiveSalesInArea(new Location(northLatitude, northLongitude), new Location(southLatitude, southLongitude));
         logger.debug(result.toString());
         return result;
@@ -42,7 +42,7 @@ public class PlaceController {
 
 
     @RequestMapping("/all")
-    public List<Place> getAll() {
+    public List<OwnerPlace> getAll() {
         return placeService.getAll();
     }
 

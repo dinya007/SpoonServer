@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.domain.Sale;
 import ru.mipt.restaurant.server.service.GeocodeService;
 import ru.mipt.restaurant.server.service.PlaceService;
@@ -33,15 +33,18 @@ public class PlaceServiceImpl implements PlaceService {
 
     @PostConstruct
     private void init() {
-        if ("development".equals(environment.getActiveProfiles()[0])) {
-            if (placeDao.getAll().isEmpty()){
-                initPlaces();
+        String[] activeProfiles = environment.getActiveProfiles();
+        if (activeProfiles.length > 0) {
+            if ("development".equals(activeProfiles[0])) {
+                if (placeDao.getAll().isEmpty()) {
+                    initPlaces();
+                }
             }
         }
     }
 
     @Override
-    public List<Place> getWithActiveSalesInArea(Location topLeft, Location bottomRight) {
+    public List<OwnerPlace> getWithActiveSalesInArea(Location topLeft, Location bottomRight) {
         return placeDao.getAllInArea(topLeft, bottomRight)
                 .stream().filter(place -> {
                     List<Sale> sales = place.getSales();
@@ -54,31 +57,31 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public List<Place> getAll() {
+    public List<OwnerPlace> getAll() {
         return placeDao.getAll();
     }
 
     @Override
-    public Place update(Place place, boolean updateAddress) {
+    public OwnerPlace update(OwnerPlace ownerPlace, boolean updateAddress) {
         if (updateAddress) {
-            Tuple<String, Location> location = geocode(place.getAddress());
-            place.setAddress(location.v1());
-            place.setLocation(location.v2());
+            Tuple<String, Location> location = geocode(ownerPlace.getAddress());
+            ownerPlace.setAddress(location.v1());
+            ownerPlace.setLocation(location.v2());
         }
-        return placeDao.save(place);
+        return placeDao.save(ownerPlace);
     }
 
     @Override
-    public Place create(String name, String address, String description) {
+    public OwnerPlace create(String name, String address, String description) {
         Tuple<String, Location> location = geocode(address);
-        Place place = Place.builder()
+        OwnerPlace ownerPlace = OwnerPlace.builder()
                 .locationName(name)
                 .location(location.v2())
                 .address(location.v1())
                 .description(description)
                 .login(SecurityContextHolder.getContext().getAuthentication().getName())
                 .build();
-        return placeDao.save(place);
+        return placeDao.save(ownerPlace);
     }
 
     @Override
@@ -87,7 +90,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public List<Place> getAllForSession() {
+    public List<OwnerPlace> getAllForSession() {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         return placeDao.getAllByOwner(login);
     }
@@ -100,27 +103,27 @@ public class PlaceServiceImpl implements PlaceService {
 
     private void initPlaces() {
         Location location1 = new Location(55.754695, 37.621527);
-        Place place1 = new Place(location1, "ReStore", "Город Москва. Улица", "Скидки на планшеты и ноутбуки", "e1@mail.com", "login1");
+        OwnerPlace ownerPlace1 = new OwnerPlace(location1, "ReStore", "Город Москва. Улица", "Скидки на планшеты и ноутбуки", "e1@mail.com", "login1");
 
         Location location2 = new Location(55.750763, 37.596108);
-        Place place2 = new Place(location2, "Starbucks", "Город Москва. Улица", "Кофе по цене чая", "e2@mail.com","login2");
+        OwnerPlace ownerPlace2 = new OwnerPlace(location2, "Starbucks", "Город Москва. Улица", "Кофе по цене чая", "e2@mail.com", "login2");
 
         Location location3 = new Location(55.756852, 37.614048);
-        Place place3 = new Place(location3, "NeVertu", "улица Моховая 15 Москва", "Магазин элитных мобильных телефонов", "toma-vesta@mail.ru", "toma");
-        place3.setSales(Arrays.asList(new Sale("Скидка 10% на все телефоны", true)));
+        OwnerPlace ownerPlace3 = new OwnerPlace(location3, "NeVertu", "улица Моховая 15 Москва", "Магазин элитных мобильных телефонов", "toma-vesta@mail.ru", "toma");
+        ownerPlace3.setSales(Arrays.asList(new Sale("Скидка 10% на все телефоны", true)));
 
         Location location4 = new Location(55.756126, 37.621163);
-        Place place4 = new Place(location4, "Чебуреки", "Никольская улица 4/5 Москва", "Самые вкусные чебуреки", "toma-vesta@mail.ru", "toma");
-        place4.setSales(Arrays.asList(new Sale("Скидка 10% на чебуреки с мясом", true), new Sale("Скидка 5% наи чебуреки с сыром и помидорами", false)));
+        OwnerPlace ownerPlace4 = new OwnerPlace(location4, "Чебуреки", "Никольская улица 4/5 Москва", "Самые вкусные чебуреки", "toma-vesta@mail.ru", "toma");
+        ownerPlace4.setSales(Arrays.asList(new Sale("Скидка 10% на чебуреки с мясом", true), new Sale("Скидка 5% наи чебуреки с сыром и помидорами", false)));
 
         Location location5 = new Location(55.615384, 37.591808);
-        Place place5 = new Place(location5, "Магазин", "Чертановская улица 36 с 1 Москва", "Просто продукты", "toma-vesta@mail.ru", "toma");
+        OwnerPlace ownerPlace5 = new OwnerPlace(location5, "Магазин", "Чертановская улица 36 с 1 Москва", "Просто продукты", "toma-vesta@mail.ru", "toma");
 
-        update(place1, false);
-        update(place2, false);
-        update(place3, false);
-        update(place4, false);
-        update(place5, false);
+        update(ownerPlace1, false);
+        update(ownerPlace2, false);
+        update(ownerPlace3, false);
+        update(ownerPlace4, false);
+        update(ownerPlace5, false);
     }
 
 }

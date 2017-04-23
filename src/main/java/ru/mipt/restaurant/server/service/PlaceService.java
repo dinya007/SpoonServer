@@ -1,23 +1,23 @@
 package ru.mipt.restaurant.server.service;
 
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 
 import java.util.List;
 
 public interface PlaceService {
 
-    List<Place> getWithActiveSalesInArea(Location topLeft, Location bottomRight);
+    List<OwnerPlace> getWithActiveSalesInArea(Location topLeft, Location bottomRight);
 
-    List<Place> getAll();
+    List<OwnerPlace> getAll();
 
-    Place update(Place place, boolean updateAddress);
+    OwnerPlace update(OwnerPlace ownerPlace, boolean updateAddress);
 
-    Place create(String name, String address, String description);
+    OwnerPlace create(String name, String address, String description);
 
     String delete(String id);
 
-    List<Place> getAllForSession();
+    List<OwnerPlace> getAllForSession();
 
 
 }

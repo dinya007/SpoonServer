@@ -17,6 +17,6 @@ public class Visitor {
     private Date creationTime;
     private Date updateTime;
     @Singular
-    private List<Place> places;
+    private List<OwnerPlace> ownerPlaces;
 
 }

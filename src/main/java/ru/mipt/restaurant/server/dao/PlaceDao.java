@@ -1,22 +1,22 @@
 package ru.mipt.restaurant.server.dao;
 
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 
 import java.util.List;
 
 public interface PlaceDao {
 
-    List<Place> getAll();
+    List<OwnerPlace> getAll();
 
-    List<Place> getAllInArea(Location topLeft, Location bottomRight);
+    List<OwnerPlace> getAllInArea(Location topLeft, Location bottomRight);
 
-    Place save(Place place);
+    OwnerPlace save(OwnerPlace ownerPlace);
 
-    Place get(String id);
+    OwnerPlace get(String id);
 
     String delete(String id);
 
-    List<Place> getAllByOwner(String login);
+    List<OwnerPlace> getAllByOwner(String login);
 
 }

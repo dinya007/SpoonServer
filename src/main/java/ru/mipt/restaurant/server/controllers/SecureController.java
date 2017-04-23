@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.mipt.restaurant.server.controllers.dto.CreatePlaceDto;
 import ru.mipt.restaurant.server.controllers.dto.IdResponse;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.service.PlaceService;
 
 import java.util.List;
@@ -29,22 +29,22 @@ public class SecureController {
     }
 
     @RequestMapping("/places/all-for-owner")
-    public List<Place> getAllForOwner() {
+    public List<OwnerPlace> getAllForOwner() {
         return placeService.getAllForSession();
     }
 
     @RequestMapping(value = "/place", method = RequestMethod.PATCH)
-    public Place updatePlace(@RequestBody Place place) {
-        return placeService.update(place, false);
+    public OwnerPlace updatePlace(@RequestBody OwnerPlace ownerPlace) {
+        return placeService.update(ownerPlace, false);
     }
 
     @RequestMapping(value = "/place", method = RequestMethod.POST)
-    public Place updatePlaceWithAddress(@RequestBody Place place) {
-        return placeService.update(place, true);
+    public OwnerPlace updatePlaceWithAddress(@RequestBody OwnerPlace ownerPlace) {
+        return placeService.update(ownerPlace, true);
     }
 
     @RequestMapping(value = "/place", method = RequestMethod.PUT)
-    public Place createPlace(@RequestBody CreatePlaceDto place) {
+    public OwnerPlace createPlace(@RequestBody CreatePlaceDto place) {
         return placeService.create(place.getName(), place.getAddress(), place.getDescription());
     }
 

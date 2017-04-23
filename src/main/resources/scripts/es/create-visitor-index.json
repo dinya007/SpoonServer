@@ -55,6 +55,9 @@
             "address": {
               "type": "string",
               "index": "no"
+            },
+            "visitTime": {
+              "type": "date"
             }
           }
         }

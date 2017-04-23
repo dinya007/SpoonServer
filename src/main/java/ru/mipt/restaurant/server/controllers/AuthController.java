@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.mipt.restaurant.server.controllers.dto.RegisterDto;
+import ru.mipt.restaurant.server.domain.Owner;
 import ru.mipt.restaurant.server.service.OwnerService;
-import ru.mipt.restaurant.server.utils.OwnerHelper;
 
 @RestController
 @RequestMapping("/authentication")
@@ -24,19 +23,21 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        if (!isValidParams(registerDto))
+    public ResponseEntity<String> register(@RequestBody Owner owner) {
+        if (!isValidParams(owner))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        ownerService.register(OwnerHelper.toOwner(registerDto));
+        ownerService.register(owner);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private boolean isValidParams(RegisterDto registerDto) {
-        return !(StringUtils.isEmpty(registerDto.getName())
-                || StringUtils.isEmpty(registerDto.getEmail())
-                || StringUtils.isEmpty(registerDto.getPassword()));
+    private boolean isValidParams(Owner owner) {
+        return !(StringUtils.isEmpty(owner.getName())
+                || StringUtils.isEmpty(owner.getEmail())
+                || StringUtils.isEmpty(owner.getLogin())
+                || StringUtils.isEmpty(owner.getPhone())
+                || StringUtils.isEmpty(owner.getPassword()));
     }
 
 }

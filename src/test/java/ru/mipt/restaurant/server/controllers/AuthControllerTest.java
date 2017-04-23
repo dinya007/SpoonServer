@@ -2,45 +2,48 @@ package ru.mipt.restaurant.server.controllers;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-import ru.mipt.restaurant.server.controllers.dto.RegisterDto;
+import ru.mipt.restaurant.server.SpringTest;
+import ru.mipt.restaurant.server.domain.Owner;
 
-public class AuthControllerTest {
 
-    private final String appUrl = "http://127.0.0.1:8081";
+public class AuthControllerTest extends SpringTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     public void login() throws Exception {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> allPlaces = restTemplate.getForEntity(appUrl + "/places/all", String.class);
+        ResponseEntity<String> allPlaces = restTemplate.getForEntity("/places/all", String.class);
         System.out.println(allPlaces);
 
-        ResponseEntity<String> registerResponse = restTemplate.postForEntity(appUrl + "/authentication/register", new RegisterDto("newLogin", "newEmail", "newPassword"), String.class);
+        ResponseEntity<String> registerResponse = restTemplate.postForEntity("/authentication/register", Owner.builder().login("newLogin").email("newEmail").name("Name").password("newPassword").phone("+71234567890").build(), String.class);
         System.out.println(registerResponse);
 
-        ResponseEntity<String> optionsResponse = restTemplate.exchange(appUrl + "/authentication/login?username=newEmail&password=newPassword", HttpMethod.OPTIONS, null, String.class);
+        ResponseEntity<String> optionsResponse = restTemplate.exchange("/authentication/login?username=newLogin&password=newPassword", HttpMethod.OPTIONS, null, String.class);
         System.out.println("Headers: " + optionsResponse.getHeaders());
 
-        ResponseEntity<String> response = restTemplate.postForEntity(appUrl + "/authentication/login?username=newEmail&password=newPassword", "", String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity("/authentication/login?username=newLogin&password=newPassword", "", String.class);
         System.out.println(response);
 
         HttpHeaders headers = new HttpHeaders();
         String J_SESSION_ID = response.getHeaders().get("Set-Cookie").get(0).split(";")[0];
         headers.add("Cookie", J_SESSION_ID);
         HttpEntity<String> entity = new HttpEntity<>("", headers);
-        ResponseEntity<String> secureResponse = restTemplate.exchange(appUrl + "/secure/all", HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> secureResponse = restTemplate.exchange("/secure/all", HttpMethod.GET, entity, String.class);
         System.out.println(secureResponse);
 
-        ResponseEntity<String> logoutResponse = restTemplate.exchange(appUrl + "/authentication/logout", HttpMethod.POST, new HttpEntity<>(null, headers), String.class);
+        ResponseEntity<String> logoutResponse = restTemplate.exchange("/authentication/logout", HttpMethod.POST, new HttpEntity<>(null, headers), String.class);
         System.out.println(logoutResponse);
 
         try {
-            ResponseEntity<String> secureResponse2 = restTemplate.exchange(appUrl + "secure/all", HttpMethod.GET, entity, String.class);
+            ResponseEntity<String> secureResponse2 = restTemplate.exchange("/secure/all", HttpMethod.GET, entity, String.class);
             System.out.println(secureResponse2);
         } catch (HttpClientErrorException exception) {
             Assert.assertEquals("401 Unauthorized", exception.getMessage());

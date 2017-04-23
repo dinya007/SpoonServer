@@ -1,7 +1,7 @@
 package ru.mipt.restaurant.server.dao.impl;
 
 import ru.mipt.restaurant.server.dao.VisitorDao;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.domain.Visitor;
 
 import java.util.List;
@@ -20,12 +20,12 @@ public class ElasticVisitorDao implements VisitorDao {
     }
 
     @Override
-    public void savePlaces(String uid, List<Place> places) {
+    public void savePlaces(String uid, List<OwnerPlace> ownerPlaces) {
 
     }
 
     @Override
-    public Map<String, List<Place>> getAll() {
+    public Map<String, List<OwnerPlace>> getAll() {
         return null;
     }
 }

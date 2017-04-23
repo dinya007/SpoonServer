@@ -10,7 +10,7 @@ import java.util.List;
 @EqualsAndHashCode(of = {"location"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Place implements Serializable {
+public class OwnerPlace implements Serializable {
 
     private String id;
     private String login;
@@ -24,7 +24,7 @@ public class Place implements Serializable {
     @Singular
     private List<Sale> sales;
 
-    public Place(Location location, String locationName, String address, String description, String ownerEmail, String login) {
+    public OwnerPlace(Location location, String locationName, String address, String description, String ownerEmail, String login) {
         this.location = location;
         this.locationName = locationName;
         this.address = address;

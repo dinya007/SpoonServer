@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 
 import javax.annotation.PreDestroy;
 import java.io.IOException;
@@ -29,7 +29,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Profile({"testing", "production"})
 @Repository
 public class ElasticPlaceDao implements PlaceDao {
 
@@ -64,7 +63,7 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public List<Place> getAll() {
+    public List<OwnerPlace> getAll() {
         SearchRequestBuilder search = getSearchRequestBuilder();
 
         logger.debug("Box request: {}", search.internalBuilder());
@@ -74,7 +73,7 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public List<Place> getAllInArea(Location topLeft, Location bottomRight) {
+    public List<OwnerPlace> getAllInArea(Location topLeft, Location bottomRight) {
         SearchRequestBuilder search = getSearchRequestBuilder();
 
         GeoBoundingBoxQueryBuilder queryBuilder = boundingBoxFilter
@@ -91,19 +90,19 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public Place save(Place place) {
+    public OwnerPlace save(OwnerPlace ownerPlace) {
         try {
             IndexRequestBuilder index = client.prepareIndex(Index.PLACES.getName(), Type.RESTAURANT.getName());
 
-            IndexRequestBuilder indexRequestBuilder = index.setSource(mapper.writeValueAsString(place));
-            if (place.getId() != null) {
-                index.setId(place.getId());
+            IndexRequestBuilder indexRequestBuilder = index.setSource(mapper.writeValueAsString(ownerPlace));
+            if (ownerPlace.getId() != null) {
+                index.setId(ownerPlace.getId());
             }
-            logger.debug("Saving new place. {}", place);
+            logger.debug("Saving new ownerPlace. {}", ownerPlace);
             IndexResponse response = indexRequestBuilder.get();
-            place.setId(response.getId());
+            ownerPlace.setId(response.getId());
             logger.debug("Response. {}", response);
-            return place;
+            return ownerPlace;
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new RuntimeException(e);
@@ -111,7 +110,7 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public Place get(String id) {
+    public OwnerPlace get(String id) {
         GetRequestBuilder getRequestBuilder = getById.setId(id);
         logger.debug("Request by id: {}", getRequestBuilder);
         GetResponse response = getRequestBuilder.get();
@@ -129,7 +128,7 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public List<Place> getAllByOwner(String login) {
+    public List<OwnerPlace> getAllByOwner(String login) {
         SearchRequestBuilder search = getSearchRequestBuilder();
 
         SearchRequestBuilder searchRequestBuilder = search.setQuery(QueryBuilders.termQuery("login", login));
@@ -141,19 +140,19 @@ public class ElasticPlaceDao implements PlaceDao {
         return mapResults(response.getHits().hits());
     }
 
-    private List<Place> mapResults(SearchHit[] results) {
-        List<Place> result = new ArrayList<>();
+    private List<OwnerPlace> mapResults(SearchHit[] results) {
+        List<OwnerPlace> result = new ArrayList<>();
         for (SearchHit searchHitField : results) {
-            Place place = mapPlace(searchHitField.getSourceAsString());
-            place.setId(searchHitField.getId());
-            result.add(place);
+            OwnerPlace ownerPlace = mapPlace(searchHitField.getSourceAsString());
+            ownerPlace.setId(searchHitField.getId());
+            result.add(ownerPlace);
         }
         return result;
     }
 
-    private Place mapPlace(String jsonPlace) {
+    private OwnerPlace mapPlace(String jsonPlace) {
         try {
-            return mapper.readValue(jsonPlace, Place.class);
+            return mapper.readValue(jsonPlace, OwnerPlace.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

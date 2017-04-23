@@ -2,7 +2,7 @@ package ru.mipt.restaurant.server.dao.impl;
 
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
-import ru.mipt.restaurant.server.domain.Place;
+import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.utils.CoordinateHelper;
 
 import java.util.ArrayList;
@@ -11,23 +11,22 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-//@Profile("development")
 //@Component
 public class InMemoryPlaceDao implements PlaceDao {
 
-    private final ConcurrentHashMap<String, Place> places;
+    private final ConcurrentHashMap<String, OwnerPlace> places;
 
     public InMemoryPlaceDao() {
         places = new ConcurrentHashMap<>();
     }
 
     @Override
-    public List<Place> getAll() {
+    public List<OwnerPlace> getAll() {
         return new ArrayList<>(places.values());
     }
 
     @Override
-    public List<Place> getAllInArea(Location topLeft, Location bottomRight) {
+    public List<OwnerPlace> getAllInArea(Location topLeft, Location bottomRight) {
         return getAll()
                 .parallelStream()
                 .filter(discount -> CoordinateHelper.isInside(topLeft, bottomRight, discount.getLocation()))
@@ -35,12 +34,12 @@ public class InMemoryPlaceDao implements PlaceDao {
     }
 
     @Override
-    public Place save(Place place) {
-        return places.put(UUID.randomUUID().toString(), place);
+    public OwnerPlace save(OwnerPlace ownerPlace) {
+        return places.put(UUID.randomUUID().toString(), ownerPlace);
     }
 
     @Override
-    public Place get(String id) {
+    public OwnerPlace get(String id) {
         return places.get(id);
     }
 
@@ -51,7 +50,7 @@ public class InMemoryPlaceDao implements PlaceDao {
     }
 
     @Override
-    public List<Place> getAllByOwner(String email) {
+    public List<OwnerPlace> getAllByOwner(String email) {
         return places.values().stream()
                 .filter(place -> place.getOwnerEmail()
                         .equals(email))
