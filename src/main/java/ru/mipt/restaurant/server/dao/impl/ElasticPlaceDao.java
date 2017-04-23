@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
 import ru.mipt.restaurant.server.domain.OwnerPlace;
+import ru.mipt.restaurant.server.domain.Place;
 
 import javax.annotation.PreDestroy;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class ElasticPlaceDao implements PlaceDao {
         logger.debug("Box request: {}", search.internalBuilder());
         SearchResponse searchResponse = search.get();
         logger.debug("Box response: {}", searchResponse);
-        return mapResults(searchResponse.getHits().hits());
+        return mapResults(searchResponse.getHits().hits(), OwnerPlace.class);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class ElasticPlaceDao implements PlaceDao {
         SearchResponse searchResponse = searchRequestBuilder.get();
         logger.debug("Box response: {}", searchResponse);
 
-        return mapResults(searchResponse.getHits().hits());
+        return mapResults(searchResponse.getHits().hits(), OwnerPlace.class);
     }
 
     @Override
@@ -115,7 +116,7 @@ public class ElasticPlaceDao implements PlaceDao {
         logger.debug("Request by id: {}", getRequestBuilder);
         GetResponse response = getRequestBuilder.get();
         logger.debug("Response: {}", response);
-        return mapPlace(response.getSourceAsString());
+        return mapPlace(response.getSourceAsString(), OwnerPlace.class);
     }
 
     @Override
@@ -137,22 +138,22 @@ public class ElasticPlaceDao implements PlaceDao {
         SearchResponse response = searchRequestBuilder.get();
         logger.debug("Response: {}", response);
 
-        return mapResults(response.getHits().hits());
+        return mapResults(response.getHits().hits(), OwnerPlace.class);
     }
 
-    private List<OwnerPlace> mapResults(SearchHit[] results) {
-        List<OwnerPlace> result = new ArrayList<>();
+    private <T extends Place> List<T> mapResults(SearchHit[] results, Class<T> clazz) {
+        List<T> result = new ArrayList<>();
         for (SearchHit searchHitField : results) {
-            OwnerPlace ownerPlace = mapPlace(searchHitField.getSourceAsString());
+            T ownerPlace = mapPlace(searchHitField.getSourceAsString(), clazz);
             ownerPlace.setId(searchHitField.getId());
             result.add(ownerPlace);
         }
         return result;
     }
 
-    private OwnerPlace mapPlace(String jsonPlace) {
+    private <T> T mapPlace(String jsonPlace, Class<T> clazz) {
         try {
-            return mapper.readValue(jsonPlace, OwnerPlace.class);
+            return mapper.readValue(jsonPlace, clazz);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

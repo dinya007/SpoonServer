@@ -20,7 +20,7 @@ import java.util.Map;
 public class PlaceController {
 
     private final PlaceService placeService;
-    private Map<String,Integer> counter = new HashMap<>();
+    private Map<String, Integer> counter = new HashMap<>();
     private Logger logger = LoggerFactory.getLogger(PlaceController.class);
 
     @Autowired

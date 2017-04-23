@@ -53,7 +53,12 @@ public class PlaceServiceImpl implements PlaceService {
                         if (sale.isActive()) return true;
                     }
                     return false;
-                }).collect(Collectors.toList());
+                }).
+                        map(place -> {
+                            place.setLogin(null);
+                            return place;
+                        })
+                .collect(Collectors.toList());
     }
 
     @Override
