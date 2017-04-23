@@ -11,8 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Owner {
 
-    private String name;
+    private String login;
     private String email;
+    private String phone;
+    private String name;
     private String password;
     @Singular
     private List<Role> roles;

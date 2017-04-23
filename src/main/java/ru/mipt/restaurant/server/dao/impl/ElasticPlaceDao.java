@@ -33,13 +33,11 @@ import java.util.List;
 @Repository
 public class ElasticPlaceDao implements PlaceDao {
 
-    private Logger logger = LoggerFactory.getLogger(ElasticPlaceDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(ElasticPlaceDao.class);
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    private IndexRequestBuilder index;
-    private ObjectMapper mapper;
     private GeoBoundingBoxQueryBuilder boundingBoxFilter;
     private TransportClient client;
-    private SearchRequestBuilder search;
     private GetRequestBuilder getById;
 
 
@@ -58,17 +56,17 @@ public class ElasticPlaceDao implements PlaceDao {
 
         getById = client.prepareGet(Index.PLACES.getName(), Type.RESTAURANT.getName(), null);
 
-        index = client.prepareIndex(Index.PLACES.getName(), Type.RESTAURANT.getName());
-
-        mapper = new ObjectMapper();
-
-        search = client.prepareSearch(Index.PLACES.getName());
-
         boundingBoxFilter = new GeoBoundingBoxQueryBuilder("location");
+    }
+
+    private SearchRequestBuilder getSearchRequestBuilder() {
+        return client.prepareSearch(Index.PLACES.getName());
     }
 
     @Override
     public List<Place> getAll() {
+        SearchRequestBuilder search = getSearchRequestBuilder();
+
         logger.debug("Box request: {}", search.internalBuilder());
         SearchResponse searchResponse = search.get();
         logger.debug("Box response: {}", searchResponse);
@@ -77,6 +75,8 @@ public class ElasticPlaceDao implements PlaceDao {
 
     @Override
     public List<Place> getAllInArea(Location topLeft, Location bottomRight) {
+        SearchRequestBuilder search = getSearchRequestBuilder();
+
         GeoBoundingBoxQueryBuilder queryBuilder = boundingBoxFilter
                 .topLeft(topLeft.getLat(), topLeft.getLon())
                 .bottomRight(bottomRight.getLat(), bottomRight.getLon());
@@ -93,6 +93,8 @@ public class ElasticPlaceDao implements PlaceDao {
     @Override
     public Place save(Place place) {
         try {
+            IndexRequestBuilder index = client.prepareIndex(Index.PLACES.getName(), Type.RESTAURANT.getName());
+
             IndexRequestBuilder indexRequestBuilder = index.setSource(mapper.writeValueAsString(place));
             if (place.getId() != null) {
                 index.setId(place.getId());
@@ -127,10 +129,12 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @Override
-    public List<Place> getAllByOwner(String email) {
-        SearchRequestBuilder searchRequestBuilder = search.setQuery(QueryBuilders.termQuery("ownerEmail", email));
+    public List<Place> getAllByOwner(String login) {
+        SearchRequestBuilder search = getSearchRequestBuilder();
 
-        logger.debug("Request by email: {}", searchRequestBuilder.internalBuilder());
+        SearchRequestBuilder searchRequestBuilder = search.setQuery(QueryBuilders.termQuery("login", login));
+
+        logger.debug("Request by login: {}", searchRequestBuilder.internalBuilder());
         SearchResponse response = searchRequestBuilder.get();
         logger.debug("Response: {}", response);
 

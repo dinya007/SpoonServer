@@ -76,7 +76,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .location(location.v2())
                 .address(location.v1())
                 .description(description)
-                .ownerEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .login(SecurityContextHolder.getContext().getAuthentication().getName())
                 .build();
         return placeDao.save(place);
     }
@@ -88,8 +88,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public List<Place> getAllForSession() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return placeDao.getAllByOwner(email);
+        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+        return placeDao.getAllByOwner(login);
     }
 
     private Tuple<String, Location> geocode(String address) {
@@ -100,21 +100,21 @@ public class PlaceServiceImpl implements PlaceService {
 
     private void initPlaces() {
         Location location1 = new Location(55.754695, 37.621527);
-        Place place1 = new Place(location1, "ReStore", "Город Москва. Улица", "Скидки на планшеты и ноутбуки", "e1@mail.com");
+        Place place1 = new Place(location1, "ReStore", "Город Москва. Улица", "Скидки на планшеты и ноутбуки", "e1@mail.com", "login1");
 
         Location location2 = new Location(55.750763, 37.596108);
-        Place place2 = new Place(location2, "Starbucks", "Город Москва. Улица", "Кофе по цене чая", "e2@mail.com");
+        Place place2 = new Place(location2, "Starbucks", "Город Москва. Улица", "Кофе по цене чая", "e2@mail.com","login2");
 
         Location location3 = new Location(55.756852, 37.614048);
-        Place place3 = new Place(location3, "NeVertu", "улица Моховая 15 Москва", "Магазин элитных мобильных телефонов", "toma-vesta@mail.ru");
+        Place place3 = new Place(location3, "NeVertu", "улица Моховая 15 Москва", "Магазин элитных мобильных телефонов", "toma-vesta@mail.ru", "toma");
         place3.setSales(Arrays.asList(new Sale("Скидка 10% на все телефоны", true)));
 
         Location location4 = new Location(55.756126, 37.621163);
-        Place place4 = new Place(location4, "Чебуреки", "Никольская улица 4/5 Москва", "Самые вкусные чебуреки", "toma-vesta@mail.ru");
+        Place place4 = new Place(location4, "Чебуреки", "Никольская улица 4/5 Москва", "Самые вкусные чебуреки", "toma-vesta@mail.ru", "toma");
         place4.setSales(Arrays.asList(new Sale("Скидка 10% на чебуреки с мясом", true), new Sale("Скидка 5% наи чебуреки с сыром и помидорами", false)));
 
         Location location5 = new Location(55.615384, 37.591808);
-        Place place5 = new Place(location5, "Магазин", "Чертановская улица 36 с 1 Москва", "Просто продукты", "toma-vesta@mail.ru");
+        Place place5 = new Place(location5, "Магазин", "Чертановская улица 36 с 1 Москва", "Просто продукты", "toma-vesta@mail.ru", "toma");
 
         update(place1, false);
         update(place2, false);

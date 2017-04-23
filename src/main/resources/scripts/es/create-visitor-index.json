@@ -1,0 +1,64 @@
+{
+  "mappings": {
+    "visitor": {
+      "properties": {
+        "uid": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "name": {
+          "type": "string",
+          "index": "no"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "updateTime": {
+          "type": "date"
+        },
+        "creationTime": {
+          "type": "date"
+        },
+        "places": {
+          "type": "nested",
+          "properties": {
+            "location": {
+              "type": "geo_point",
+              "lat_lon": true,
+              "index": "no"
+            },
+            "id": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "ownerEmail": {
+              "type": "string",
+              "index": "no"
+            },
+            "site": {
+              "type": "string",
+              "index": "no"
+            },
+            "phone": {
+              "type": "string",
+              "index": "no"
+            },
+            "description": {
+              "type": "string",
+              "index": "no"
+            },
+            "locationName": {
+              "type": "string",
+              "index": "no"
+            },
+            "address": {
+              "type": "string",
+              "index": "no"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -24,7 +24,7 @@ public class OwnerDetailService implements UserDetailsService {
 
         if (owner != null) {
             String[] roles = owner.getRoles().stream().map(Role::name).collect(Collectors.toList()).toArray(new String[]{});
-            return new User(owner.getEmail(), owner.getPassword(), true, true, true, true,
+            return new User(owner.getLogin(), owner.getPassword(), true, true, true, true,
                     AuthorityUtils.createAuthorityList(roles));
         } else {
             throw new UsernameNotFoundException("could not find the user '"

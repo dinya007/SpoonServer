@@ -42,7 +42,7 @@ dependencies {
         exclude group: "xerces"
     }
 
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.2.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 
 }
 

@@ -17,6 +17,6 @@ public interface PlaceDao {
 
     String delete(String id);
 
-    List<Place> getAllByOwner(String email);
+    List<Place> getAllByOwner(String login);
 
 }
