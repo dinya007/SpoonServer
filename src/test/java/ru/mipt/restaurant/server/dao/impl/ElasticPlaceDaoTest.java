@@ -38,7 +38,6 @@ public class ElasticPlaceDaoTest extends ElasticTest {
 
     @Test
     public void testUpdate() throws Exception {
-        ElasticPlaceDao elasticPlaceDao = new ElasticPlaceDao();
         elasticPlaceDao.save(ownerPlace1);
 
         timeout();
@@ -58,7 +57,6 @@ public class ElasticPlaceDaoTest extends ElasticTest {
 
     @Test
     public void testMultipleUpdates() throws Exception {
-        ElasticPlaceDao elasticPlaceDao = new ElasticPlaceDao();
         elasticPlaceDao.save(ownerPlace1);
         elasticPlaceDao.save(ownerPlace2);
         elasticPlaceDao.save(ownerPlace3);

@@ -14,25 +14,23 @@
           "type": "string",
           "index": "not_analyzed"
         },
-        "updateTime": {
-          "type": "date"
-        },
-        "creationTime": {
-          "type": "date"
-        },
         "places": {
           "type": "nested",
           "properties": {
+            "id": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
             "location": {
               "type": "geo_point",
               "lat_lon": true,
               "index": "no"
             },
-            "id": {
+            "locationName": {
               "type": "string",
-              "index": "not_analyzed"
+              "index": "no"
             },
-            "ownerEmail": {
+            "address": {
               "type": "string",
               "index": "no"
             },
@@ -48,16 +46,18 @@
               "type": "string",
               "index": "no"
             },
-            "locationName": {
+            "ownerEmail": {
               "type": "string",
               "index": "no"
             },
-            "address": {
-              "type": "string",
-              "index": "no"
+            "startTime": {
+              "type": "date"
             },
             "visitTime": {
               "type": "date"
+            },
+            "visitorsAmount": {
+              "type": "integer"
             }
           }
         }

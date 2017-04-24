@@ -1,10 +1,8 @@
 package ru.mipt.restaurant.server.dao;
 
-import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.domain.Visitor;
 
 import java.util.List;
-import java.util.Map;
 
 public interface VisitorDao {
 
@@ -12,8 +10,8 @@ public interface VisitorDao {
 
     List<Visitor> getByPlaceId(String id);
 
-    void savePlaces(String uid, List<OwnerPlace> ownerPlaces);
+    Visitor save(Visitor visitor);
 
-    Map<String, List<OwnerPlace>> getAll();
+    List<Visitor> getAll();
 
 }

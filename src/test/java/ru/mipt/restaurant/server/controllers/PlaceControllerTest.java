@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import ru.mipt.restaurant.server.SpringTest;
+import ru.mipt.restaurant.server.ElasticTest;
 import ru.mipt.restaurant.server.domain.OwnerPlace;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class PlaceControllerTest extends SpringTest {
+public class PlaceControllerTest extends ElasticTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 @Setter
 @Getter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public final class OwnerPlace extends Place {

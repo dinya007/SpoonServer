@@ -2,7 +2,8 @@ package ru.mipt.restaurant.server.dao.impl;
 
 public enum Index {
 
-    PLACES("places");
+    PLACES("places"),
+    VISITORS("visitors");
 
     private final String name;
 

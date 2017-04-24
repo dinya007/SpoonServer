@@ -9,11 +9,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import ru.mipt.restaurant.server.SpringTest;
+import ru.mipt.restaurant.server.ElasticTest;
 import ru.mipt.restaurant.server.domain.Owner;
 
 
-public class AuthControllerTest extends SpringTest {
+public class AuthControllerTest extends ElasticTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

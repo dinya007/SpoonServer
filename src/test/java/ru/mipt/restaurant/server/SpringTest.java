@@ -11,7 +11,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public abstract class SpringTest extends ElasticTest {
+public abstract class SpringTest {
 
     protected MockMvc mvc;
     @Autowired

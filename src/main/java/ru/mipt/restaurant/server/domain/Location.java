@@ -1,35 +1,19 @@
 package ru.mipt.restaurant.server.domain;
 
+import lombok.*;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Location implements Serializable {
 
     private double lat;
     private double lon;
-
-    public Location() {
-    }
-
-    public Location(double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -54,11 +38,4 @@ public class Location implements Serializable {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Location{" +
-                "lat=" + lat +
-                ", lon=" + lon +
-                '}';
-    }
 }

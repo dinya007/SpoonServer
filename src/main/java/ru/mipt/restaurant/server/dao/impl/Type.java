@@ -2,7 +2,8 @@ package ru.mipt.restaurant.server.dao.impl;
 
 public enum Type {
 
-    RESTAURANT("restaurant");
+    RESTAURANT("restaurant"),
+    VISITOR("visitor");
 
     private final String name;
 

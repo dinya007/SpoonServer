@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.mipt.restaurant.server.dao.impl.ElasticPlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
 import ru.mipt.restaurant.server.domain.OwnerPlace;
@@ -19,11 +20,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public abstract class ElasticTest {
+public abstract class ElasticTest extends SpringTest {
 
     private static final String TEST_ES_DATA = "test_es_data";
     private static Node esNode;
-    protected final ElasticPlaceDao elasticPlaceDao = new ElasticPlaceDao();
+
+    @Autowired
+    protected ElasticPlaceDao elasticPlaceDao;
 
     protected Location location1 = new Location(55.754695, 37.621527);
     protected OwnerPlace ownerPlace1 = new OwnerPlace(location1, "ReStore", "Address 1", "Скидки на планшеты и ноутбуки", "e1@mail.com", "login1");
@@ -81,14 +84,14 @@ public abstract class ElasticTest {
 
     @Before
     public void initElasticsearchData() throws Exception {
-        Process process = Runtime.getRuntime().exec("/Users/denis/Documents/Java/Idea_Projects/RestaurantServer/src/main/resources/scripts/es/create-place-index.sh");
+        Process process = Runtime.getRuntime().exec("/Users/denis/Documents/Java/Idea_Projects/RestaurantServer/src/main/resources/scripts/es/create-all-indexes.sh");
         process.waitFor();
         printOutput(process);
     }
 
     @After
     public void stopElasticsearchData() throws Exception {
-        Process process = Runtime.getRuntime().exec("/Users/denis/Documents/Java/Idea_Projects/RestaurantServer/src/main/resources/scripts/es/delete-place-index.sh");
+        Process process = Runtime.getRuntime().exec("/Users/denis/Documents/Java/Idea_Projects/RestaurantServer/src/main/resources/scripts/es/delete-all-indexes.sh");
         process.waitFor();
         printOutput(process);
     }

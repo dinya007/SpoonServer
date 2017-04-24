@@ -10,66 +10,52 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.mipt.restaurant.server.dao.PlaceDao;
 import ru.mipt.restaurant.server.domain.Location;
 import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.domain.Place;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class ElasticPlaceDao implements PlaceDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(ElasticPlaceDao.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElasticPlaceDao.class);
     private final ObjectMapper mapper = new ObjectMapper();
-
+    private final TransportClient client;
     private GeoBoundingBoxQueryBuilder boundingBoxFilter;
-    private TransportClient client;
     private GetRequestBuilder getById;
 
-
-    public ElasticPlaceDao() {
-        Settings settings = Settings.builder()
-                .put("cluster.name", "restaurant-server")
-                .put("client.transport.sniff", true)
-                .build();
-
-        try {
-            client = TransportClient.builder().settings(settings).build()
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-        getById = client.prepareGet(Index.PLACES.getName(), Type.RESTAURANT.getName(), null);
-
-        boundingBoxFilter = new GeoBoundingBoxQueryBuilder("location");
+    @Autowired
+    public ElasticPlaceDao(TransportClient client) {
+        this.client = client;
     }
 
-    private SearchRequestBuilder getSearchRequestBuilder() {
-        return client.prepareSearch(Index.PLACES.getName());
+    @PostConstruct
+    private void init(){
+        getById = this.client.prepareGet(Index.PLACES.getName(), Type.RESTAURANT.getName(), null);
+
+        boundingBoxFilter = new GeoBoundingBoxQueryBuilder("location");
     }
 
     @Override
     public List<OwnerPlace> getAll() {
         SearchRequestBuilder search = getSearchRequestBuilder();
 
-        logger.debug("Box request: {}", search.internalBuilder());
+        LOGGER.debug("Box request: {}", search.internalBuilder());
         SearchResponse searchResponse = search.get();
-        logger.debug("Box response: {}", searchResponse);
+        LOGGER.debug("Box response: {}", searchResponse);
         return mapResults(searchResponse.getHits().hits(), OwnerPlace.class);
     }
 
@@ -83,9 +69,9 @@ public class ElasticPlaceDao implements PlaceDao {
 
         SearchRequestBuilder searchRequestBuilder = search.setQuery(queryBuilder);
 
-        logger.debug("Box request: {}", searchRequestBuilder.internalBuilder());
+        LOGGER.debug("Box request: {}", searchRequestBuilder.internalBuilder());
         SearchResponse searchResponse = searchRequestBuilder.get();
-        logger.debug("Box response: {}", searchResponse);
+        LOGGER.debug("Box response: {}", searchResponse);
 
         return mapResults(searchResponse.getHits().hits(), OwnerPlace.class);
     }
@@ -99,13 +85,13 @@ public class ElasticPlaceDao implements PlaceDao {
             if (ownerPlace.getId() != null) {
                 index.setId(ownerPlace.getId());
             }
-            logger.debug("Saving new ownerPlace. {}", ownerPlace);
+            LOGGER.debug("Saving new ownerPlace. {}", ownerPlace);
             IndexResponse response = indexRequestBuilder.get();
             ownerPlace.setId(response.getId());
-            logger.debug("Response. {}", response);
+            LOGGER.debug("Response. {}", response);
             return ownerPlace;
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -113,18 +99,18 @@ public class ElasticPlaceDao implements PlaceDao {
     @Override
     public OwnerPlace get(String id) {
         GetRequestBuilder getRequestBuilder = getById.setId(id);
-        logger.debug("Request by id: {}", getRequestBuilder);
+        LOGGER.debug("Request by id: {}", getRequestBuilder);
         GetResponse response = getRequestBuilder.get();
-        logger.debug("Response: {}", response);
+        LOGGER.debug("Response: {}", response);
         return mapPlace(response.getSourceAsString(), OwnerPlace.class);
     }
 
     @Override
     public String delete(String id) {
         DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete(Index.PLACES.getName(), Type.RESTAURANT.getName(), id);
-        logger.debug("Delete request: {}", deleteRequestBuilder);
+        LOGGER.debug("Delete request: {}", deleteRequestBuilder);
         DeleteResponse deleteResponse = deleteRequestBuilder.get();
-        logger.debug("Delete response: {}", deleteResponse);
+        LOGGER.debug("Delete response: {}", deleteResponse);
         return id;
     }
 
@@ -134,9 +120,9 @@ public class ElasticPlaceDao implements PlaceDao {
 
         SearchRequestBuilder searchRequestBuilder = search.setQuery(QueryBuilders.termQuery("login", login));
 
-        logger.debug("Request by login: {}", searchRequestBuilder.internalBuilder());
+        LOGGER.debug("Request by login: {}", searchRequestBuilder.internalBuilder());
         SearchResponse response = searchRequestBuilder.get();
-        logger.debug("Response: {}", response);
+        LOGGER.debug("Response: {}", response);
 
         return mapResults(response.getHits().hits(), OwnerPlace.class);
     }
@@ -159,8 +145,8 @@ public class ElasticPlaceDao implements PlaceDao {
         }
     }
 
-    @PreDestroy
-    private void onDestroy() {
-        client.close();
+    private SearchRequestBuilder getSearchRequestBuilder() {
+        return client.prepareSearch(Index.PLACES.getName());
     }
+
 }
