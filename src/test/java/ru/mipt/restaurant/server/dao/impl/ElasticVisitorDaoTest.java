@@ -65,7 +65,7 @@ public class ElasticVisitorDaoTest extends ElasticTest {
 
         timeout();
 
-        Visitor result = visitorDao.getByUid(visitor.getUid());
+        Visitor result = visitorDao.get(visitor.getUid());
 
         VisitorPlace visitorPlace1 = visitor.getPlaces().get(0);
         VisitorPlace visitorPlace2 = visitor.getPlaces().get(1);
@@ -91,6 +91,11 @@ public class ElasticVisitorDaoTest extends ElasticTest {
         assertVisitor(visitor, visitorResult);
         assertVisitorPlace(visitorPlace1, visitorResult.getPlaces().get(0));
         assertVisitorPlace(visitorPlace2, visitorResult.getPlaces().get(1));
+    }
+
+    @Test
+    public void testGetByUidWhenNotExist() throws Exception {
+        Assert.assertNull(visitorDao.get("uid"));
     }
 
     private void assertVisitorPlace(VisitorPlace place1, VisitorPlace place2) {

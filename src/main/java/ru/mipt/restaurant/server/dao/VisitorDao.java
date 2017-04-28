@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface VisitorDao {
 
-    Visitor getByUid(String uid);
+    Visitor get(String uid);
 
     List<Visitor> getByPlaceId(String id);
 

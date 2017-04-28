@@ -10,22 +10,21 @@ import ru.mipt.restaurant.server.domain.Location;
 import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.domain.Sale;
 import ru.mipt.restaurant.server.service.GeocodeService;
-import ru.mipt.restaurant.server.service.PlaceService;
+import ru.mipt.restaurant.server.service.OwnerPlaceService;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class PlaceServiceImpl implements PlaceService {
+public class OwnerPlaceServiceImpl implements OwnerPlaceService {
 
     private final PlaceDao placeDao;
     private final GeocodeService geocodeService;
     private final Environment environment;
 
     @Autowired
-    public PlaceServiceImpl(PlaceDao placeDao, GeocodeService geocodeService, Environment environment) {
+    public OwnerPlaceServiceImpl(PlaceDao placeDao, GeocodeService geocodeService, Environment environment) {
         this.placeDao = placeDao;
         this.geocodeService = geocodeService;
         this.environment = environment;
@@ -43,28 +42,6 @@ public class PlaceServiceImpl implements PlaceService {
         }
     }
 
-    @Override
-    public List<OwnerPlace> getWithActiveSalesInArea(Location topLeft, Location bottomRight) {
-        return placeDao.getAllInArea(topLeft, bottomRight)
-                .stream().filter(place -> {
-                    List<Sale> sales = place.getSales();
-                    if (sales == null) return false;
-                    for (Sale sale : sales) {
-                        if (sale.isActive()) return true;
-                    }
-                    return false;
-                }).
-                        map(place -> {
-                            place.setLogin(null);
-                            return place;
-                        })
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<OwnerPlace> getAll() {
-        return placeDao.getAll();
-    }
 
     @Override
     public OwnerPlace update(OwnerPlace ownerPlace, boolean updateAddress) {

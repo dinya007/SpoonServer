@@ -65,8 +65,14 @@ public class WebSecurityRouterConfig extends WebSecurityConfigurerAdapter {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowCredentials(true);
             config.addAllowedOrigin("https://127.0.0.1");
+            config.addAllowedOrigin("https://127.0.0.1:80");
+            config.addAllowedOrigin("https://127.0.0.1:443");
             config.addAllowedOrigin("https://localhost");
+            config.addAllowedOrigin("https://localhost:80");
+            config.addAllowedOrigin("https://localhost:443");
             config.addAllowedOrigin("https://" + Inet4Address.getLocalHost().getHostAddress());
+            config.addAllowedOrigin("https://" + Inet4Address.getLocalHost().getHostAddress() + ":80");
+            config.addAllowedOrigin("https://" + Inet4Address.getLocalHost().getHostAddress() + ":443");
             config.addAllowedHeader("*");
             config.addAllowedHeader("X-Custom-Header");
             config.addAllowedMethod("*");

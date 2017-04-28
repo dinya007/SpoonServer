@@ -44,12 +44,13 @@ public class ElasticVisitorDao implements VisitorDao {
     }
 
     @Override
-    public Visitor getByUid(String uid) {
+    public Visitor get(String uid) {
         GetRequestBuilder getRequestBuilder = getByUid.setId(uid);
         LOGGER.debug("Request by uid: {}", getRequestBuilder);
         GetResponse response = getRequestBuilder.get();
         LOGGER.debug("Response: {}", response);
-        return map(response.getSourceAsString(), Visitor.class);
+        String json = response.getSourceAsString();
+        return (json == null) ? null : map(json, Visitor.class);
     }
 
     @Override

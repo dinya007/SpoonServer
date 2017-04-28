@@ -23,7 +23,6 @@ import ru.mipt.restaurant.server.domain.OwnerPlace;
 import ru.mipt.restaurant.server.domain.Place;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class ElasticPlaceDao implements PlaceDao {
     }
 
     @PostConstruct
-    private void init(){
+    private void init() {
         getById = this.client.prepareGet(Index.PLACES.getName(), Type.RESTAURANT.getName(), null);
 
         boundingBoxFilter = new GeoBoundingBoxQueryBuilder("location");
